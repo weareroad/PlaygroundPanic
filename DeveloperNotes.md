@@ -1,192 +1,180 @@
-## Developer Notes (for contributors)
+# Developer Notes
 
-This section is a quick “handover” for anyone opening the codebase for the first time.
+This is the current handover for Playground Panic. It was refreshed from the repository contents on 15 September 2026. It is a source/layout inventory, not a claim that every gameplay idea in the old WIP notes is complete.
 
-### 1) Module Roles & Flow
+## Current project state
 
-- **PlaygroundPanic.bas** — entry point / bootstrap. Decides which screen to show first, initializes globals, loads helpers.
-- **AttractScreen.bas** — title/attract loop (demo mode, credits hook).
-- **GameScreen.bas** — main gameplay loop (input → update → draw → music tick → loop).
-- **Interstitials:** `LevelStartScreen.bas`, `LevelEndScreen.bas`, `LifeLostScreen.bas`, `GameOverScreen.bas`.
-- **Meta UI:** `SettingsScreen.bas`, `KeysScreen.bas`, `HiScoreListScreen.bas`, `HiScoreEntryScreen.bas`, `CreditScreen.bas`, `LoreScreen.bas`.
-- **Support:**  
-  - `Constants.bas` — tunables (speeds, palette ids, gravity, collision sizes).  
-  - `Helpers.bas` — generic helpers (rng, clamping, timers, table lookups).  
-  - `GameHelpers.bas` — game-specific helpers (spawn waves, resolve collisions, scoring).  
-  - `Specials.bas` — hazards/power-ups orchestration.  
-  - `_nextlib.bas` — Spectrum Next helpers (sprites, layers, palette, bank/file helpers).  
-- **Assets:** `data/` and `rob4.pt3` (AY/PT3 music).
+Playground Panic is a ZX Spectrum Next game written in NextBASIC, the NextBuildStudio/Boriel ZX Basic-derived compiled BASIC dialect. The project uses Next-specific graphics, sprite, Layer 2, bank-loading, keyboard/joystick, and audio features. PT3 tracker modules provide music; `data/game.afb` provides sound-effect data for the configured player.
 
-> Convention: each screen exposes a public entry routine like `RUN_*SCREEN` and returns cleanly to its caller.
+The repository contains source and runtime assets, but not the NextBuildStudio toolchain or emulator. The existing VS Code/NextBuildStudio integration can build and run this checkout from the project folder. A locally generated `PlaygroundPanic.nex` and the `build/` directory may be present; both are ignored and should be treated as disposable outputs.
 
-### 2) Screen Lifecycle Pattern
+## Build entry point and dependencies
 
-Use a simple, consistent pattern so screens can yield to one another without side-effects:
+Compile `PlaygroundPanic.bas`. It:
 
-```basic
-REM ===== in AttractScreen.bas =====
-DEF PROC RUN_ATTRACT()
-  PROC init_attract()
-  REPEAT
-    PROC poll_input()
-    PROC update_attract()
-    PROC draw_attract()
-    PROC music_tick()
-  UNTIL exitRequested
-  PROC teardown_attract()
-END PROC
-```
-When you need to change screen, set a shared nextScreen$ and exitRequested=TRUE. The caller (usually PlaygroundPanic.bas) reads nextScreen$ and jumps accordingly.
+1. Includes external NextBuild libraries: `nextlib.bas`, `nextlib_ints.bas`, `keys.bas`, and `string.bas`.
+2. Includes the project modules listed below.
+3. Loads the font, tile, sprite, player, SFX, and music banks.
+4. Initialises sprites, SFX, music, interrupts, and the Next display registers.
+5. Builds lookup/score tables and enters the main screen loop.
 
-### 3) Constants & Tuning
+The external include files are not in this repository. The VS Code tasks in `.vscode/tasks.json` reference the separate NextBuild installation and CSpect setup used by the local development environment. Use the VS Code integration to compile/run here; check those paths when setting up another machine.
 
-Centralize tunables to avoid “magic numbers” in loops:
-```basic
-REM ===== Constants.bas =====
-REM player movement
-LET PLAYER_W = 12: LET PLAYER_H = 16
-LET PLAYER_RUN_SPEED = 2
-LET PLAYER_JUMP_VEL  = -5
-LET GRAVITY = 1
+The source loads runtime files by bare filename—for example `PanicSprites.spr`, `game.afb`, and `game_theme_1.pt3`. The tracked copies are in `data/`. The emulator task mounts `data/` as the SD directory; real-hardware/emulator layouts must provide the same effective lookup path.
 
-REM gameplay pacing
-LET HAZARD_SPAWN_EVERY = 80   : REM frames
-LET MAX_KIDS_PER_LINE = 6
+## Source map
 
-REM colors/palettes (ids are abstract; actual palette set in _nextlib.bas)
-LET PAL_TITLE = 0
-LET PAL_GAME  = 1
-LET PAL_SCORE = 2
-```
+| File | Actual role |
+| --- | --- |
+| `PlaygroundPanic.bas` | Entry point, asset loading, initialisation, screen dispatcher, main loop, initial high-score table. |
+| `Constants.bas` | Shared constants and almost all global state, including sprite/tile/music IDs, timing, settings, player/NPC arrays, and default keys. |
+| `Helpers.bas` | General sprite, sound, keyboard debounce, and formatting helpers. |
+| `GameHelpers.bas` | Game-specific helpers, input helper `SpaceOrFire`, screen switching, NPC/player setup and behaviour, collisions, scoring/bonus text, and related logic. |
+| `GameScreen.bas` | Level setup, player input/movement, timer, NPC updates, collisions, HUD, and level/life completion flow. |
+| `Specials.bas` | Milk, snatcher, dog, dinner lady, cane, dust, and dog-poo spawning/update/cleanup. |
+| `AttractScreen.bas` | Attract/title screen and animated demonstration. |
+| `SettingsScreen.bas` | Start-game/settings menu, school-size and segregation choices, and navigation to key configuration. |
+| `KeysScreen.bas` | Interactive UP/DOWN/LEFT/RIGHT key redefinition. |
+| `LevelStartScreen.bas` | Level intro and between-level bonus text. |
+| `LifeLostScreen.bas` | Life-lost message, bonus text, continue/abandon input. |
+| `GameOverScreen.bas` | Game-over message and end-game bonus text. |
+| `HiScoreListScreen.bas` | Displays the ten built-in high-score entries. |
+| `HiScoreEntryScreen.bas` | Present screen stub; currently displays a prompt and returns to the game rather than implementing name entry. |
+| `LoreScreen.bas` | Animated lore/character/item screen. |
+| `CreditScreen.bas` | Credits screen. |
+| `robs_nextlib.bas` | Checked-in NextBASIC/assembly library file, currently not included by the entry point. |
 
-> Edit here first for balance passes. Avoid redefining in the screen modules.  
+There is no `LevelEndScreen.bas`, `LevelCodeScreen.bas`, `_nextlib.bas`, `rob4.pt3`, `sync.bat`, or `NewScreen.bas` in this checkout. References to those names in older documentation are stale.
 
-### 4) Input Handling
+## Runtime flow
 
-Keep input polling separate from game logic so we can swap keyboard/joypad later:
-```basic
-REM ===== Helpers.bas =====
-DEF PROC POLL_INPUT()
-  REM read keyboard
-  LET left  = INKEY$("O") <> ""
-  LET right = INKEY$("P") <> ""
-  LET jump  = INKEY$("Q") <> "" OR INKEY$("SPACE") <> ""
-  LET act   = INKEY$("A") <> ""
-  LET pause = INKEY$("SPACE") <> ""  : REM if not used for jump
+The program initially shows an attract screen. The dispatcher calls one handler once per frame after `WaitRetrace(1)`; each handler follows the pattern `init when gNeedInit=1 → update → read input → change music when gNeedInit=2` where applicable.
 
-  REM (optional) call into _nextlib.bas to read joystick if present
-  REM PROC read_joy()
-END PROC
-```
+The implemented screen IDs and main transitions are:
 
-> Don’t branch UI and gameplay on raw keystrokes sprinkled around the code — route everything through a single POLL_INPUT step.  
+- Attract → lore (after its timer) or settings (Space/Fire).
+- Settings → level start, key configuration, or back to attract.
+- Level start → game.
+- Game → next level, life lost, or game over depending on timer/collision/lives.
+- Life lost → game or game over.
+- Game over → settings.
+- Lore → high-score list; high-score list → credits after a timer or settings on input.
+- Credits → settings on input or attract after its timer.
 
-### 5) Game Loop Shape
+`JumpScreen()` sets the target and marks it for initialisation. Shared state is deliberately global and lives in `Constants.bas`; reset/ownership is distributed among the screen and helper routines.
 
-Target a stable cadence: poll → update → draw → audio tick. If you keep per-frame work bounded (sprite count, collision pairs), 50 Hz is feasible on Next hardware.
-```basic
-REM ===== GameScreen.bas (sketch) =====
-DEF PROC RUN_GAME()
-  PROC init_game()
-  REPEAT
-    PROC POLL_INPUT()
-    PROC step_physics()
-    PROC step_ai()
-    PROC resolve_collisions()
-    PROC draw_world()
-    PROC draw_hud()
-    PROC music_tick()
-    REM (Optional) small PAUSE to keep cadence reasonable in emulators
-    REM PAUSE 0 : REM or a minimal delay if you observe runaway loops
-  UNTIL gameOver
-  PROC teardown_game()
-END PROC
-```
+## Controls and input
 
-> If you add any blocking calls (file I/O, heavy generation), do them between screens or in a one-time init phase, not mid-loop.  
+Default movement keys are O/P/Q/A (left/right/up/down), with Space as fire/continue. Kempston input is read from port 31 in settings and gameplay paths. The Keys screen can redefine the four movement keys. Space/Fire is handled by `SpaceOrFire()` with debounce logic.
 
-### 6) Sprites, Layers & Palettes (Next basics)
+The settings screen labels the joystick option “KEMPSTON STICK”. There is no separate, general input abstraction matching the old notes, and no verified support for other joystick/gamepad standards.
 
-Try to funnel all hardware-specific calls through _nextlib.bas (init sprite engine, upload frames, set palettes, switch to Layer 2 / Tilemap, etc.).
+## Assets and banks
 
-Respect practical limits: too many overlapping sprites on one scanline can drop frames or flicker.
+Tracked runtime assets are:
 
-Prefer pre-computation: cache sprite frame ids, tile indices, and bounding boxes.
+- `data/PanicSprites.spr` — sprite patterns.
+- `data/tiles_8x8.spr` — tile patterns.
+- `data/game.afb` — SFX data.
+- `data/intro_attract_1.pt3`, `game_theme_1.pt3`, `game_theme_2.pt3`, `dead_1.pt3`, and four `level_*.pt3` files — music modules.
 
-Keep palette changes coherent: define palette sets (PAL_TITLE, PAL_GAME, …) and switch via a single helper PROC set_palette(id).
+The font (`[]font8.fnt`) and player data (`[]ts4000.bin`) are referenced by the loader but are not tracked in this repository. Confirm where those files come from before distributing a runnable build. Bank numbers and the sprite/tile IDs are defined in `Constants.bas` and repeated in the loader's `LoadSDBank` calls.
 
-> This separation lets us swap render paths (e.g., Tilemap vs Layer 2) without touching game logic.  
+## Persistence and scoring
 
-### 7) Audio (PT3 / AY)
+The high-score table is populated from a `DATA` block in `PlaygroundPanic.bas` at startup. No file-based high-score save/load is implemented. The high-score entry screen is not a complete name-entry system yet. Do not describe scores as persistent between runs.
 
-Keep a tiny music_tick() that’s called once per loop iteration; it should advance the PT3 player state and return quickly.
+## Known gaps and risks
 
-Provide a global flag musicOn and make all audio helpers no-ops when disabled (for emu setups without AY).
+- A clean build cannot be reproduced from this repository alone because the external NextBuild libraries/toolchain and emulator are not versioned here; the existing local VS Code integration supplies them.
+- Runtime asset lookup depends on the SD/emulator working-directory layout; the source does not prefix loads with `data/`.
+- Font and player-bank files are missing from tracked assets.
+- `robs_nextlib.bas` may be useful reference code, but changing it will not affect the current build unless the include strategy is changed.
+- `Constants.bas` contains an apparently incomplete `#define BANK_` line and other old comments/typos. Treat compiler behaviour as authoritative before cleaning these up.
+- Music bank slots 46/47 are loaded from the same two game-theme files as slots 44/45; this may be intentional repetition, but is worth checking when adding tracks.
+- There is no automated test suite. Behavioural verification is manual on a compatible emulator or real Spectrum Next.
 
-8) Data & Files
+The informal `rob-wip-notes.md.txt` contains useful historical bug reports and design ideas, but it also includes completed, superseded, and speculative items. Validate each item against the code before implementing it.
 
-Place binary tables/levels under data/.
+## Platform setup (initial pass)
 
-If you implement save data (e.g., high scores), use a single file near the game (e.g., PLAYPANIC.HI) and write a version byte up front so future formats can be migrated.
-```basic
-REM ===== Helpers.bas (sketch) =====
-DEF PROC SAVE_HISCORE(name$, score)
-  REM open file, write version, entries, checksum (simple sum is fine)
-END PROC
+These notes currently cover the author's Omarchy Quattro machine. The Windows and macOS paths still need to be added once they have been exercised and can be described accurately.
 
-DEF PROC LOAD_HISCORES()
-  REM if version mismatch, reset to defaults
-END PROC
+### Omarchy Quattro (Arch Linux)
+
+#### 1. Install NextBuildStudio
+
+Open the [NextBuildStudio downloads page](https://zxnext.uk/nextbuildstudio/#downloads) and download the Linux AppImage listed there. Save it somewhere convenient, such as `~/Downloads`.
+
+Install the Linux packages needed by NextBuildStudio/CSpect and AppImage support:
+
+```bash
+sudo pacman -S mono
+sudo pacman -S fuse2
 ```
 
-### 9) Debugging & Tools
+Make the downloaded AppImage executable, then run it. Replace the example filename with the actual filename downloaded from the page:
 
-Add a build-time #IF DEBUG flag (if you prefer conditional includes) or a runtime debug=1 global to toggle:
-
-a simple FPS or frame counter,
-
-collision boxes,
-
-AI state text.
-
-Create small, deterministic test setups (e.g., “spawn one hazard at x=…”). Determinism makes regressions obvious.
-```basic
-IF debug THEN PROC draw_hitboxes()
-IF debug THEN PRINT AT 0,0; "Score:";score;"  Lives:";lives
+```bash
+cd ~/Downloads
+chmod +x NextBuildStudio-<version>.AppImage
+./NextBuildStudio-<version>.AppImage
 ```
 
-### 10) Performance Tips
+Follow the NextBuildStudio setup prompts. This installs/sets up the NBS software and its integrated VS Code workflow. The exact AppImage filename and version will change over time, so do not hard-code them into project scripts without checking the downloads page.
 
-Sprite budget: cap max concurrent sprites; reuse/deactivate rather than allocate new.
+#### 2. Install and authenticate GitHub CLI
 
-Collision pruning: broad-phase first (grid or AABB), then narrow-phase.
+Install `gh` from the Arch repositories:
 
-Tables > math: where possible, precompute sines, velocity clamps, or animation step tables.
+```bash
+sudo pacman -S github-cli
+```
 
-Avoid per-frame file access. Load assets at screen init; close files promptly.
+Start GitHub CLI authentication:
 
-### 11) Code Style
+```bash
+gh auth login
+```
 
-Use PROC/FN to give names to logical steps; avoid long, monolithic loops.
+In the prompts, choose:
 
-Keep related variables grouped with a comment header (PLAYER_, ENEMY_, HUD_…).
+1. `GitHub.com`.
+2. `HTTPS` for the Git protocol.
+3. `Login with a web browser`.
 
-Document any hardware interaction in _nextlib.bas with a one-line “what/why”, and keep raw numbers out of gameplay code.
+GitHub CLI will display a one-time code and open, or ask you to open, a browser page. Copy the code into the browser, sign in to the GitHub account that should access the repository, and authorise the CLI. Back in the terminal, `gh` should report that authentication succeeded. Check the result with:
 
-### 12) Adding a New Screen (Checklist)
+```bash
+gh auth status
+```
 
-Create NewScreen.bas with PROC RUN_NEWSCREEN().
+#### 3. Clone the source
 
-Initialize/reset only what you own; restore anything you changed on exit.
+Create a `road` folder in the home directory, enter it, and clone the repository:
 
-Wire it in the caller (usually PlaygroundPanic.bas’s screen switch).
+```bash
+mkdir -p ~/road
+cd ~/road
+gh repo clone weareroad/playgroundpanic
+cd ~/road/playgroundpanic
+```
 
-If it needs graphics/audio assets, load them once in init_… and free/disable in teardown_….
+The local checkout should now be at `~/road/playgroundpanic`. Open that folder in NextBuildStudio/its VS Code integration, then use the existing build/run tasks described in `.vscode/tasks.json`. Keep the `data/` directory beside the source files when running the game.
 
-Quick Tasks Backlog (nice to have)
+## Suggested first tasks for a new contributor
 
-- [ ] Joypad support in _nextlib.bas; surface via POLL_INPUT.
-- [ ] File-based high-score persistence with versioned header.
-- [ ] Optional FPS/debug overlay.
-- [ ] Palette accessibility presets (deuteranopia/tritanopia-friendly).
-- [ ] Add a second PT3 track and a “music: on/off” toggle in Settings.
+1. Use the existing VS Code integration to reproduce the build, then document the NextBuildStudio/NextBuild and CSpect setup when convenient.
+2. Confirm the required external include files, font, and player asset, and document their source/licensing.
+3. Test asset lookup from both the emulator task and a real SD-card layout.
+4. Exercise each screen transition, input remapping, level timer, special item, collision, and audio change.
+5. Only then promote items from `rob-wip-notes.md.txt` into a prioritised issue/backlog.
+
+## Change checklist
+
+- Keep shared IDs, timings, and state in `Constants.bas` where appropriate.
+- Preserve the include order in `PlaygroundPanic.bas` unless the compiler requires a deliberate change.
+- Keep frame-loop work bounded and avoid file I/O during gameplay.
+- If changing assets or bank IDs, test the complete loader and runtime lookup path.
+- Compile using the VS Code/NextBuildStudio integration; for runtime-sensitive changes, also run on CSpect or hardware.
+- In a handover or pull request, distinguish verified behaviour, untested assumptions, and planned work.

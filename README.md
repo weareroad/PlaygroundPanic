@@ -11,16 +11,12 @@
   <sub><i>ZX Spectrum Next logo by Rick Dickinson, used with respect for the Spectrum Next project.</i></sub>
 </p>
 
-_A fast, arcade-style playground caper for the **ZX Spectrum Next**, written in **NextBASIC**._
+_A fast, arcade-style playground caper for the **ZX Spectrum Next**_
 
-> Repo: `robsoft/PlaygroundPanic` (flat layout with screens split into multiple `.bas` files, plus a `data/` folder and a PT3 track).
-
-## TL;DR
+> Repo: `weareroad/PlaygroundPanic` (flat layout with screens split into multiple `.bas` files, plus a `data/` folder containing graphics (sprites, tiles), sound effects and PT3 tracks).
 
 - **Platform:** ZX Spectrum Next (real hardware or CSpect / ZEsarUX)  
-- **Language:** NextBASIC  
-- **Run:** `LOAD "PlaygroundPanic.bas"` then `RUN` (NextZXOS)  
-- **Save data:** (optional) High scores/name entry screens are included; see below
+- **Language:** NextBASIC Studio (Boriel Basic, with 'Next' features) 
 
 
 ## Documentation
@@ -39,80 +35,52 @@ Controls are configurable (see the **Keys** screen). A common default is:
 
 - **Left/Right:** `O` / `P`  
 - **Jump/Action:** `Q` / `A` or `SPACE`  
-- **Pause:** `SPACE` • **Quit:** `ESC`
+- **Pause:** `SPACE` • **Quit:** `ESC` (on a default CSpect setup this will kill the emulator)  
 
-> The repo contains dedicated screens like `KeysScreen.bas`, `SettingsScreen.bas`, `HiScoreListScreen.bas`, and `HiScoreEntryScreen.bas`, indicating key-mapping and score entry support.
 
-## Project Layout
+## Current repository contents
 
-The repository is intentionally flat so you can browse and load files quickly on the Next:
+The following is an up-to-date snapshot of the files currently in the repository. Generated build output and the `assets/` folder are intentionally omitted here.
+
 ```
 /
-├── PlaygroundPanic.bas # Entry/loader
+├── AGENTS.md # for Codex/Claude
 ├── AttractScreen.bas # Title/attract loop
-├── GameScreen.bas # Main gameplay loop
-├── GameOverScreen.bas # Game over sequence
-├── LevelStartScreen.bas # Level intro
-├── LevelEndScreen.bas # Level complete
-├── LevelCodeScreen.bas # (Optional) level code system
-├── LifeLostScreen.bas # Death/respawn flow
-├── HiScoreListScreen.bas # High-score table
-├── HiScoreEntryScreen.bas # Name entry for scores
-├── SettingsScreen.bas # Options (e.g., audio/controls)
-├── KeysScreen.bas # Key mapping
-├── CreditScreen.bas # Credits
-├── LoreScreen.bas # Story/lore screen
 ├── Constants.bas # Game constants (palettes, sprite ids, speeds…)
-├── Helpers.bas # Common helpers (timers, RNG, math…)
-├── GameHelpers.bas # Gameplay helpers (spawns, collisions…)
-├── Specials.bas # Power-ups / hazards orchestration
-├── _nextlib.bas # Next-specific helpers (sprites, layers, regs)
-├── rob4.pt3 # PT3 music track
-├── sync.bat # Convenience script (e.g., copy to SD card)
-├── data/ # Asset data (levels, tables, etc.)
-└── LICENSE
+├── CreditScreen.bas # Credits
+├── DeveloperNotes.md # Onboarding/orientation for devs
+├── GameHelpers.bas # Gameplay helpers (spawning, collisions) 
+├── GameOverScreen.bas # Gam over sequence
+├── GameScreen.bas # Main gameplay loop
+├── Helpers.bas # Other helpers
+├── HiScoreEntryScreen.bas # INCOMPLETE high-score entry screen
+├── HiScoreListScreen.bas # Guess what? High-score list
+├── KeysScreen.bas # CHange keyboard controls screen
+├── LICENSE # MIT license
+├── LevelStartScreen.bas # Pulled up at the start of a level
+├── LifeLostScreen.bas # Pulled up at the end of a life/level
+├── LoreScreen.bas #  One of the intro/attract screens
+├── PlaygroundPanic.bas # MAIN ENTRY POINT
+├── README.md # this file
+├── SettingsScreen.bas # config the game THESE ARE NOT PERSISTED YET
+├── Specials.bas # handling for some of the NPC behaviour
+├── rob-wip-notes.md.txt # out of date notes, need compiling into DeveloperNotes
+├── robs_nextlib.bas # now unused, a patch file for previous version of NBS
+└── data/
+    ├── PanicSprites.spr # main sprites file
+    ├── dead_1.pt3 # music played when you 'die'
+    ├── game.afb # sound effects file
+    ├── game_theme_1.pt3 # temp game intro theme
+    ├── game_theme_2.pt3 # another game intro theme
+    ├── intro_attract_1.pt3 # and another one - not sure which ones are used
+    ├── level_dywmb.pt3 # Dont You Want Me Baby sting
+    ├── level_eott.pt3 #  Eye Of The Tiger sting
+    ├── level_tcm.pt3 # don't recall this one off-hand
+    ├── level_tm.pt3 # The Model sting
+    └── tiles_8x8.spr # sprite tiles (used for backgrounds, static graphics etc)
 ```
 
-## Running the Game
-
-### Real Hardware (NextZXOS)
-
-1. Copy the repo folder (or at least `*.bas`, `rob4.pt3`, and `data/`) to your SD card.  
-2. From the NextZXOS browser:  
-
-```
-LOAD "PlaygroundPanic.bas"
-RUN
-```
-3. Keep relative paths intact (e.g., `data/` next to the `.bas` files).
-
-### Emulators
-
-- **CSpect:** Run in ZX Next mode, mount an SD image/host folder containing the files, then load via NextZXOS browser.  
-- **ZEsarUX:** Enable ZX Next features (sprites/layers/copper as needed), boot NextZXOS, and load as above.
-
-## Audio
-
-- Background music/SFX are handled via AY; the repo includes a **PT3** module (`rob4.pt3`). Make sure AY audio is enabled in your emulator (or on hardware) for full effect.
-
-## Build / Workflow
-
-This is a **NextBASIC-first** project:
-
-- Develop & iterate directly in NextBASIC on hardware or an emulator.  
-- Use `sync.bat` (optional) to mirror files to your SD image/device from a PC.  
-- If you later produce a `.nex` binary, document the command(s) here.
-
-## Technical Notes (Next Basics)
-
-- **Screens split by role:** title/attract, gameplay, interstitials, settings, hi-score, etc. The main loader (`PlaygroundPanic.bas`) chains into these modules.  
-- **Next helpers:** `_nextlib.bas` suggests a small compatibility layer for sprites/layers/ports; keep it loaded before game screens that rely on it.  
-- **Constants & tuning:** Gameplay constants are centralized in `Constants.bas`—start there for balance tweaks.
-
-## Data & Persistence
-
-- **Level data / tables:** stored under `data/` (binary or BASIC `DATA` loaders, depending on your routines).  
-- **Hi-scores:** handled by `HiScoreListScreen.bas` & `HiScoreEntryScreen.bas`. If you add file-based persistence, document the filename/format here.
+## This is a **NextBasicStudio** project:
 
 ## Roadmap (suggested)
 
@@ -122,7 +90,8 @@ This is a **NextBASIC-first** project:
 - In-game audio toggle; additional PT3 tracks  
 - Color-palette accessibility presets
 
-## Troubleshooting
+
+## Troubleshooting after code changes
 
 - **Black screen/return to BASIC:** check that `_nextlib.bas` is loaded/merged before screens needing Next registers; verify `data/` path.  
 - **No music:** emulator AY disabled or PT3 player not invoked on the relevant screen.  
@@ -149,8 +118,7 @@ PRs and issues welcome. Please:
 This project is licensed under the [MIT License](LICENSE).
 
 **Additional condition:** derivative works may not be distributed under the
-name **Playground Panic**. The name is reserved by the original author.
-
+name **Playground Panic**. The name is reserved by the original authors.
 
 
 

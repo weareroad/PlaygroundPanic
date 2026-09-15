@@ -11,3 +11,4 @@ main.cfg
 !/data/*.*
 PlaygroundPanic.cfg
 *.bas.map
+build/

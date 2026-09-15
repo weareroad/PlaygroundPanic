@@ -19,7 +19,7 @@
 SetupNext()
 CLS256(COLOR_BLACK)
 
-LoadSDBank("[]font8.spr", 0, 0, 0, 32) ' BANK_FONT
+LoadSDBank("[]font8.fnt", 0, 0, 0, 32) ' BANK_FONT - was .SPR, now .FNT
 LoadSDBank("tiles_8x8.spr", 0, 0, 0, 34) ' BANK_TILES
 LoadSDBank("PanicSprites.spr", 0, 0, 0, 36) ' BANK_SPRITES
 LoadSDBank("game.afb",0,0,0,41)  ' BANK_SFX
@@ -69,7 +69,7 @@ loop until SpaceOrFire()=1
 #include "SettingsScreen.bas"
 #include "GameOverScreen.bas"
 #include "Specials.bas"
-#include "LifeLostSCreen.bas"
+#include "LifeLostScreen.bas"
 #include "GameScreen.bas"
 #include "LevelStartScreen.bas"
 #include "HiScoreEntryScreen.bas"

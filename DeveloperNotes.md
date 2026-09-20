@@ -104,16 +104,19 @@ These notes currently cover the author's Omarchy Quattro machine. The Windows an
 
 #### 1. Install NextBuildStudio
 
-Open the [NextBuildStudio downloads page](https://zxnext.uk/nextbuildstudio/#downloads) and download the Linux AppImage listed there. Save it somewhere convenient, such as `~/Downloads`.
+Open the [NextBuildStudio downloads page](https://zxnext.uk/nextbuildstudio/#downloads) and download the Linux AppImage listed there. This file is an installer, not the application itself: running it sets up NextBuildStudio in its own app folder (at the time of writing, `~/Applications/NextBuildStudioV10`) and adds a launcher entry. It can be saved anywhere, such as `~/Downloads`, and deleted once you have confirmed the install works.
 
-Install the Linux packages needed by NextBuildStudio/CSpect and AppImage support:
+Install the Linux packages needed by NextBuildStudio/CSpect, AppImage support and the installer:
 
 ```bash
 sudo pacman -S mono
 sudo pacman -S fuse2
+sudo pacman -S zenity
 ```
 
-Make the downloaded AppImage executable, then run it. Replace the example filename with the actual filename downloaded from the page:
+`zenity` is required by the installer. Without it, v1.1.25 exits silently (status 1) straight after logging `[1/8] Setting up directories`, with no error message, and installs nothing. If that happens, install `zenity` and run the installer again.
+
+Make the downloaded AppImage executable, then run it. Replace the example filename with the actual filename downloaded from the page (for example `NextBuildStudioV10-x86_64-1.1.25.AppImage`):
 
 ```bash
 cd ~/Downloads
@@ -121,7 +124,7 @@ chmod +x NextBuildStudio-<version>.AppImage
 ./NextBuildStudio-<version>.AppImage
 ```
 
-Follow the NextBuildStudio setup prompts. This installs/sets up the NBS software and its integrated VS Code workflow. The exact AppImage filename and version will change over time, so do not hard-code them into project scripts without checking the downloads page.
+Follow the NextBuildStudio setup prompts. This installs/sets up the NBS software and its integrated VS Code workflow, and NextBuildStudio should then appear in the application launcher. The exact AppImage filename and version will change over time, so do not hard-code them into project scripts without checking the downloads page.
 
 #### 2. Install and authenticate GitHub CLI
 
@@ -157,10 +160,10 @@ Create a `road` folder in the home directory, enter it, and clone the repository
 mkdir -p ~/road
 cd ~/road
 gh repo clone weareroad/playgroundpanic
-cd ~/road/playgroundpanic
+cd ~/road/PlaygroundPanic
 ```
 
-The local checkout should now be at `~/road/playgroundpanic`. Open that folder in NextBuildStudio/its VS Code integration, then use the existing build/run tasks described in `.vscode/tasks.json`. Keep the `data/` directory beside the source files when running the game.
+The local checkout should now be at `~/road/PlaygroundPanic`. Open that folder in NextBuildStudio/its VS Code integration, then use the existing build/run tasks described in `.vscode/tasks.json`. Keep the `data/` directory beside the source files when running the game.
 
 ## Suggested first tasks for a new contributor
 

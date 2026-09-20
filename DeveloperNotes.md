@@ -80,6 +80,46 @@ Tracked runtime assets are:
 
 The font (`[]font8.fnt`) and player data (`[]ts4000.bin`) are referenced by the loader but are not tracked in this repository. Confirm where those files come from before distributing a runnable build. Bank numbers and the sprite/tile IDs are defined in `Constants.bas` and repeated in the loader's `LoadSDBank` calls.
 
+## Sprite bank: `data/PanicSprites.spr`
+
+`PanicSprites.spr` is a raw 16 KiB sprite bank: 64 indexed patterns × 256 bytes per pattern, with each pattern being a standard 16×16 sprite. There is no obvious file header; the first pattern is index 0. In the NBS sprite editor, think of the file as one sheet of 64 numbered 16×16 images, rather than as separate files for the player, NPCs, and objects.
+
+The game initialises the bank with `InitSprites2(64, 0, BANK_SPRITES)`. Pattern indexes are the fourth argument to `UpdateSprite`; the third argument is the hardware sprite slot. Those two numbers are not the same thing. The normal hardware slots are: slot 0 for the player, slots 1–30 for ordinary NPCs, slots 31–37 for special objects/NPCs, and slots 40–49 for the ten possible dog-poo sprites (`POO_SPRITE_OFFSET = 40`).
+
+### Pattern index map
+
+| Pattern indexes | Contents | Animation layout |
+| --- | --- | --- |
+| 0–3 | Player | Walk, 4 frames |
+| 4 | Player-related extra/unused pattern | Not used by the main animation code |
+| 5 | Poo | Single static pattern |
+| 6 | Dust cloud | Single static pattern |
+| 7 | Milk bottle | Single static pattern |
+| 8–11 | Player | Climbing up, 4 frames |
+| 12 | Player-related extra/unused pattern | Not used by the main animation code |
+| 13 | Cane | Single static pattern |
+| 14–15 | Blank/reserved | No visible art in the checked-in bank |
+| 16–19 | Player | Climbing down, 4 frames |
+| 20 | Player-related extra/unused pattern | Not used by the main animation code |
+| 21 | Bell | Single static pattern; defined as `BELLSPRITE` but not currently drawn by the game code |
+| 22–23 | Blank/reserved | No visible art in the checked-in bank |
+| 24–27 | Dog | Walk, 4 frames |
+| 28–31 | Dog | Climbing up, 4 frames |
+| 32–35 | Dog | Climbing down, 4 frames |
+| 36–39 | Snatcher | Walk, 4 frames |
+| 40–43 | Snatcher | Climbing up, 4 frames |
+| 44–47 | Snatcher | Climbing down, 4 frames |
+| 48–51 | Dinner lady | Walk, 4 frames |
+| 52–55 | Dinner lady | Climbing up, 4 frames |
+| 56–59 | Dinner lady | Climbing down, 4 frames |
+| 60–63 | Blank/reserved | No visible art in the checked-in bank |
+
+For the animated groups, frame 0 is the first index in the range and frame 3 is the last. The code advances the animation frame independently of movement direction: horizontal movement uses the walk group, while vertical movement uses the relevant climb-up or climb-down group. Left-facing characters normally reuse the same patterns with the sprite's horizontal mirror attribute set, so there is no second left-facing copy in the bank.
+
+The constants that define the starts of these ranges are in `Constants.bas`: `PLAYERSPRITEWALK = 0`, `PLAYERSPRITECLIMBUP = 8`, `PLAYERSPRITECLIMBDOWN = 16`, `DOGSPRITEWALK = 24`, `DOGSPRITECLIMBUP = 28`, `DOGSPRITECLIMBDOWN = 32`, `SNATCHERSPRITEWALK = 36`, `SNATCHERSPRITECLIMBUP = 40`, `SNATCHERSPRITECLIMBDOWN = 44`, `DINNERSPRITEWALK = 48`, `DINNERSPRITECLIMBUP = 52`, and `DINNERSPRITECLIMBDOWN = 56`. The player and NPC animation constants both set the frame count to 4.
+
+The source also uses palette/attribute values to recolour the player and some NPCs, so an image can look different in-game without there being another pattern for that colour. `PLAYERANIMTIMER = 5` means the player animation advances every five waits/retraces; NPC animation timing is controlled separately by each NPC's speed state.
+
 ## Persistence and scoring
 
 The high-score table is populated from a `DATA` block in `PlaygroundPanic.bas` at startup. No file-based high-score save/load is implemented. The high-score entry screen is not a complete name-entry system yet. Do not describe scores as persistent between runs.

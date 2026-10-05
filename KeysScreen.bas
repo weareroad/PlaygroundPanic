@@ -26,13 +26,15 @@ sub UpdateKeysScreen()
     L2Text(2,8,"PRESS THE KEY FOR LEFT", BANK_FONT, 0)
   else if gKeyStep=3
     L2Text(2,10,"PRESS THE KEY FOR RIGHT", BANK_FONT, 0)
+  else if gKeyStep=4
+    L2Text(2,12,"PRESS THE KEY FOR ABORT", BANK_FONT, 0)
   else
     L2Text(15, 22, "PRESS SPACE/FIRE", BANK_FONT, 0)
   endif
 end sub
 
 sub ReadKeysKeyboard()
-  if gKeyStep>3
+  if gKeyStep>4
     if SpaceOrFire()=1 then JumpScreen(SETTINGSSCREEN)
     return
   endif
@@ -64,6 +66,11 @@ sub ReadKeysKeyboard()
     KEY_RIGHT = key 'cooked
     gKeyRight = sKey
     L2Text(27,10,gKeyRight, BANK_FONT, 0)
+  else if gKeyStep=4
+    if key=KEYSPACE or key=KEY_UP or key=KEY_DOWN or key=KEY_LEFT or key=KEY_RIGHT then return
+    KEY_ABORT = key 'cooked
+    gKeyAbort = sKey
+    L2Text(27,12,gKeyAbort, BANK_FONT, 0)
   endif
 
   gKeyStep=gKeyStep+1

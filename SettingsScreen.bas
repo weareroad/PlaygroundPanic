@@ -31,7 +31,7 @@ sub InitSettingsScreen()
   L2Text(15, 4, "NEW GAME", BANK_FONT, mask)
   
   L2Text(15, 8, "KEMPSTON STICK", BANK_FONT, mask)
-  L2Text(15, 9, gKeyUp+", "+gKeyDown+", "+gKeyLeft+", "+gKeyRight, BANK_FONT, mask)
+  L2Text(15, 9, gKeyUp+", "+gKeyDown+", "+gKeyLeft+", "+gKeyRight+" & "+gKeyAbort, BANK_FONT, mask)
   L2Text(15, 10, "CHANGE KEYS", BANK_FONT, mask)
 
   L2Text(15, 12, "RURAL", BANK_FONT, mask)

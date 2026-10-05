@@ -654,7 +654,7 @@ sub ReadGameKeyboard()
   if (MultiKeys(KEYSPACE) or (joy bAnd JOY_FIRE = JOY_FIRE)) and DEBUG_MODE > 0
     CurrentDebug()
 
-  elseif MultiKeys(KEY0) and DEBUG_MODE > 0
+  elseif MultiKeys(KEY_ABORT) and DEBUG_MODE > 0
     Debounce(key)
     LifeOver()
   endif

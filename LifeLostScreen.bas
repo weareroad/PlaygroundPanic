@@ -24,7 +24,6 @@ sub InitLifeLostScreen()
     L2Text(2,16,"LAST LIFE! PLAYGROUND PANIC!!", BANK_FONT, 0)
   endif  
   L2Text(3, 20, "PRESS SPACE/FIRE TO CONTINUE", BANK_FONT, 0)
-  L2Text(10, 22, "OR PRESS 0 TO ABANDON", BANK_FONT, 0)
   gNeedInit=0
 end sub
 
@@ -38,8 +37,8 @@ sub ReadLifeLostKeyboard()
   if key=KEYSPACE
     Debounce(KEYSPACE)
     JumpScreen(GAMESCREEN)
-  elseif key=KEY0
-    Debounce(KEY0)
+  elseif key=KEY_ABORT
+    Debounce(KEY_ABORT)
     JumpScreen(GAMEOVERSCREEN)
   endif
 end sub

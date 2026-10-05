@@ -94,7 +94,8 @@
 #define SOUND_GOT_DUST 52
 #define SOUND_OUCH 91
 #define SOUND_NPC_WIN 2
-#define SOUND_NPC_APPEAR 0
+#define SOUND_NONE 0
+#define SOUND_NPC_APPEAR 1
 #define SOUND_ITEM_APPEAR 65
 #define SOUND_DEAD 56
 #define SOUND_POO 44
@@ -277,11 +278,13 @@ dim KEY_RIGHT as UINTEGER = KEYP
 dim KEY_UP as UINTEGER = KEYQ
 dim KEY_DOWN as UINTEGER = KEYA
 dim KEY_FIRE as UINTEGER = KEYSPACE
+dim KEY_ABORT as UINTEGER = KEY0
 dim gKeyLeft as string = "O"
 dim gKeyRight as string = "P"
 dim gKeyUp as string = "Q"
 dim gKeyDown as string = "A"
 dim gKeyFire as string = "SPACE"
+dim gKeyAbort as string = "0"
 
 dim gHiNames(10) as string
 dim gHiScores(10) as UINTEGER

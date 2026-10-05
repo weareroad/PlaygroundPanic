@@ -50,12 +50,12 @@ The following is an up-to-date snapshot of the files currently in the repository
 ├── CreditScreen.bas # Credits
 ├── DeveloperNotes.md # Onboarding/orientation for devs
 ├── GameHelpers.bas # Gameplay helpers (spawning, collisions) 
-├── GameOverScreen.bas # Gam over sequence
+├── GameOverScreen.bas # Game-over sequence
 ├── GameScreen.bas # Main gameplay loop
 ├── Helpers.bas # Other helpers
 ├── HiScoreEntryScreen.bas # INCOMPLETE high-score entry screen
 ├── HiScoreListScreen.bas # Guess what? High-score list
-├── KeysScreen.bas # CHange keyboard controls screen
+├── KeysScreen.bas # Change keyboard controls screen
 ├── LICENSE # MIT license
 ├── LevelStartScreen.bas # Pulled up at the start of a level
 ├── LifeLostScreen.bas # Pulled up at the end of a life/level
@@ -73,6 +73,7 @@ The following is an up-to-date snapshot of the files currently in the repository
     ├── game_theme_1.pt3 # temp game intro theme
     ├── game_theme_2.pt3 # another game intro theme
     ├── intro_attract_1.pt3 # and another one - not sure which ones are used
+    ├── just_say_no.pt3 # Adam's Grange Hill track!!
     ├── level_dywmb.pt3 # Dont You Want Me Baby sting
     ├── level_eott.pt3 #  Eye Of The Tiger sting
     ├── level_tcm.pt3 # don't recall this one off-hand

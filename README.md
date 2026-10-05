@@ -26,7 +26,7 @@ _A fast, arcade-style playground caper for the **ZX Spectrum Next**_
 
 ## Premise
 
-The bell rings. Chaos erupts. Keep order on the playground—shepherd kids, dodge hazards, and survive the recess timer. Earn points for tidy routes and quick clears.
+The bell rings. Chaos erupts. Keep out of trouble in the playground — avoid the other kids, dodge hazards, collect the things that make break more bearable, and survive until the bell rings again. It's the life we all led in the 1980s. At long last, you can live it again.
 
 
 ## Controls

@@ -23,7 +23,7 @@ CLS256(COLOR_BLACK)
 '' the [] prefix here tells NBS that the file is in the NBS distribution stuff
 '' and if the file doesn't begin [], it's assumed to be in the 'data' subfolder of the project
 
-LoadSDBank("[]font8.fnt", 0, 0, 0, 32) ' BANK_FONT - was .SPR, now .FNT
+LoadSDBank("[]font7.fnt", 0, 0, 0, 32) ' BANK_FONT - was .SPR, now .FNT
 LoadSDBank("tiles_8x8.spr", 0, 0, 0, 34) ' BANK_TILES
 LoadSDBank("PanicSprites.spr", 0, 0, 0, 36) ' BANK_SPRITES
 LoadSDBank("game.afb",0,0,0,41)  ' BANK_SFX

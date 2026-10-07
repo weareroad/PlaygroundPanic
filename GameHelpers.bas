@@ -2,6 +2,10 @@
 ' difference between GameHelpers and Helpers is that GameHelpers knows about the game, the global vars etc,
 ' and Helpers is more general-purpose sprite/machine type stuff
 
+function ResetNext() as byte
+  NextReg(2,1)
+  return 0
+end function 
 
 function SpaceOrFire() as byte
   if in(31)=JOY_FIRE

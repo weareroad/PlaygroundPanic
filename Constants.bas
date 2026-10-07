@@ -102,6 +102,8 @@
 #define SOUND_SLIDE 48
 #define SOUND_BELL 67
 
+const GAME_VER as string = "VER 1.1A"
+
 const MUSIC_ATTRACT as ubyte = 43
 const MUSIC_GAME_1 as ubyte = 44
 const MUSIC_GAME_2 as ubyte = 45

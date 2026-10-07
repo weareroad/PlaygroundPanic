@@ -110,7 +110,7 @@ end sub
 sub SelectSettings()
 
   if ySettingsHighlight = 4 'play game
-    gLevel=1
+    gLevel=3
     GameInit()
     JumpScreen(LEVELSTARTSCREEN)
     return

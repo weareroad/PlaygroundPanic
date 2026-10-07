@@ -26,7 +26,7 @@ sub InitLevelStartScreen()
 
   L2Text(15, 22, "PRESS SPACE/FIRE", BANK_FONT, 0)
 
-  gCurrentTrack = cast(ubyte,MUSIC_LEVEL_1 -1 + (gLevel mod HITS_COUNT)) 
+  gCurrentTrack = cast(ubyte,MUSIC_LEVEL_1 + ((gLevel-1) mod MUSIC_TRACKS_COUNT)) 
   gNeedInit=2
 end sub
 

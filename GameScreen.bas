@@ -55,13 +55,11 @@ sub InitLevelDirection(tDir as uByte)
 
 sub InitGameScreen(level as uByte)  
   gNeedInit = 2
-  gCurrentTrack = cast(integer, MUSIC_GAME_1 -1 + (gLevel mod 2))
+  gCurrentTrack = cast(ubyte, MUSIC_GAME_1 + ((gLevel-1) mod MUSIC_TRACKS_COUNT))
 
-  dim tDir as ubyte = gLevel mod 4
   gTimer = GAMETICKSECOND
   gTimeToGo = (ySettingsSegregation + 3) * 15
   if gLevel>5 then gTimeToGo = gTimeToGo + (5 * (gLevel-5))  
-  'gNextSpecial = 0
   gTimeBetweenSpecials = 400
   gTimeNextSpecial = gTimeBetweenSpecials
 
@@ -71,6 +69,7 @@ sub InitGameScreen(level as uByte)
   gSliding=0
   gCurrentPoo=0
 
+  dim tDir as ubyte = gLevel mod 4
   InitLevelDirection(tDir)
 
   ResetPlayer(tDir)
@@ -652,7 +651,8 @@ sub ReadGameKeyboard()
   endif
 
   if (MultiKeys(KEYSPACE) or (joy bAnd JOY_FIRE = JOY_FIRE)) and DEBUG_MODE > 0
-    CurrentDebug()
+    gTimer = 0
+    ''CurrentDebug()
 
   elseif MultiKeys(KEY_ABORT) and DEBUG_MODE > 0
     Debounce(key)

@@ -15,9 +15,13 @@
 #INCLUDE <string.bas>
 #INCLUDE "Constants.bas"
 #INCLUDE "Helpers.bas"
+INK 0: PAPER 0: CLS
 
 SetupNext()
 CLS256(COLOR_BLACK)
+
+'' the [] prefix here tells NBS that the file is in the NBS distribution stuff
+'' and if the file doesn't begin [], it's assumed to be in the 'data' subfolder of the project
 
 LoadSDBank("[]font8.fnt", 0, 0, 0, 32) ' BANK_FONT - was .SPR, now .FNT
 LoadSDBank("tiles_8x8.spr", 0, 0, 0, 34) ' BANK_TILES
@@ -148,11 +152,11 @@ sub GenerateScoreTable()
   next n
 end sub
 scoredata:
-  data "ROBSOFT",10000,"OLIVIA",9500 
-  data "LOUISE",9000,"ANGUS",8500 
-  data "BONNIE",8000,"SCOOBY",7500 
-  data "KEITH",7000,"COLIN",6500 
-  data "KEN",6000,"KEVIN",5500 
+  data "ROAD",10000,"ADAM",9500 
+  data "ROB",9000,"CLIVE",8500 
+  data "DIZZY",8000,"WILLY",7500 
+  data "JETMAN",7000,"HORACE",6500 
+  data "SABREMAN",6000,"WALLY",5500 
 
 sub SetupNext()
   asm 

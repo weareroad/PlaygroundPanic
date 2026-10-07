@@ -120,6 +120,35 @@ The constants that define the starts of these ranges are in `Constants.bas`: `PL
 
 The source also uses palette/attribute values to recolour the player and some NPCs, so an image can look different in-game without there being another pattern for that colour. `PLAYERANIMTIMER = 5` means the player animation advances every five waits/retraces; NPC animation timing is controlled separately by each NPC's speed state.
 
+## Tile bank: `data/tiles_8x8.spr`
+
+(If you open this file in NBS/VSCode, set the mode to be '8x8 tiles (256 colours)' - out of the box, NBS might choose one of the other options and the tiles will look very ocnfusing indeed).
+
+| Content                  | Tile Index |  
+| ------------------------ | ---------- |  
+|  TILE_GREEN_BACKGROUND   |         4  |
+|  TILE BRICK_TOP          |         5  |
+|  TILE_BRICK_LEFT         |         6  |
+|  TILE_BRICK_RIGHT        |         7  |
+|  TILE_BLACK_BACKGROUND   |        20  |
+|  TILE_TOPBOTTOM          |         9  |
+|  TILE_BRICK_GREEN_LEFT   |        30  |
+|  TILE_BRICK_GREEN_RIGHT  |        31  |
+|  TILE_SETTING_SELECTED   |        14  |
+|  TILE_SETTING_HIGHLIGHT  |        17  | 
+|  TILE_POO                |        36  |
+|  TILE_LEFT_DOOR_TOP      |        32  |
+|  TILE_RIGHT_DOOR_TOP     |        33  |
+|  TILE_LEFT_DOOR_BOTTOM   |        34  |
+|  TILE_RIGHT_DOOR_BOTTOM  |        35  |
+|  TILE_LEFT_DOOR_OPEN     |        40  |
+|  TILE_RIGHT_DOOR_OPEN    |        41  |
+|  TILE_CLOCK1             |        44  |
+|  TILE_CLOCK2             |        45  | 
+|  TILE_CLOCK3             |        46  |
+|  TILE_CLOCK4             |        47  |  
+
+
 ## Persistence and scoring
 
 The high-score table is populated from a `DATA` block in `PlaygroundPanic.bas` at startup. No file-based high-score save/load is implemented. The high-score entry screen is not a complete name-entry system yet. Do not describe scores as persistent between runs.
@@ -130,7 +159,7 @@ The high-score table is populated from a `DATA` block in `PlaygroundPanic.bas` a
 - Runtime asset lookup depends on the SD/emulator working-directory layout; the source does not prefix loads with `data/`.
 - Font and player-bank files are missing from tracked assets.
 - `robs_nextlib.bas` may be useful reference code, but changing it will not affect the current build unless the include strategy is changed.
-- `Constants.bas` contains an apparently incomplete `#define BANK_` line and other old comments/typos. Treat compiler behaviour as authoritative before cleaning these up.
+- `Constants.bas` contains an apparently incomplete `|  BANK_` line and other old comments/typos. Treat compiler behaviour as authoritative before cleaning these up.
 - Music bank slots 46/47 are loaded from the same two game-theme files as slots 44/45; this may be intentional repetition, but is worth checking when adding tracks.
 - There is no automated test suite. Behavioural verification is manual on a compatible emulator or real Spectrum Next.
 

@@ -24,25 +24,27 @@ sub InitSettingsScreen()
 
   L2Text(1, 4, "START GAME", BANK_FONT, mask)
 
-  L2Text(1, 8, "KEYS", BANK_FONT, mask)
-  L2Text(1, 12, "SCHOOL SIZE", BANK_FONT, mask)
-  L2Text(1, 16, "SEGREGATION", BANK_FONT, mask)
+  L2Text(1, 7, "KEYS", BANK_FONT, mask)
+  L2Text(1, 11, "SCHOOL SIZE", BANK_FONT, mask)
+  L2Text(1, 15, "SEGREGATION", BANK_FONT, mask)
 
   L2Text(15, 4, "NEW GAME", BANK_FONT, mask)
   
-  L2Text(15, 8, "KEMPSTON STICK", BANK_FONT, mask)
-  L2Text(15, 9, gKeyUp+", "+gKeyDown+", "+gKeyLeft+", "+gKeyRight+" & "+gKeyAbort, BANK_FONT, mask)
-  L2Text(15, 10, "CHANGE KEYS", BANK_FONT, mask)
+  L2Text(15, 7, "KEMPSTON STICK", BANK_FONT, mask)
+  L2Text(15, 8, gKeyUp+", "+gKeyDown+", "+gKeyLeft+", "+gKeyRight+" & "+gKeyAbort, BANK_FONT, mask)
+  L2Text(15, 9, "CHANGE KEYS", BANK_FONT, mask)
 
-  L2Text(15, 12, "RURAL", BANK_FONT, mask)
-  L2Text(15, 13, "SUBURBAN", BANK_FONT, mask)
-  L2Text(15, 14, "METROPOLITAN", BANK_FONT, mask)
+  L2Text(15, 11, "RURAL", BANK_FONT, mask)
+  L2Text(15, 12, "SUBURBAN", BANK_FONT, mask)
+  L2Text(15, 13, "METROPOLITAN", BANK_FONT, mask)
 
-  L2Text(15, 16, "FIRST YEARS ONLY", BANK_FONT, mask)
-  L2Text(15, 17, "LOWER HALF", BANK_FONT, mask)
-  L2Text(15, 18, "MIXED", BANK_FONT, mask)
-  L2Text(15, 19, "UPPER HALF", BANK_FONT, mask)
-  L2Text(15, 20, "NO GIRLS ALLOWED", BANK_FONT, mask)
+  L2Text(15, 15, "FIRST YEARS ONLY", BANK_FONT, mask)
+  L2Text(15, 16, "LOWER HALF", BANK_FONT, mask)
+  L2Text(15, 17, "MIXED", BANK_FONT, mask)
+  L2Text(15, 18, "UPPER HALF", BANK_FONT, mask)
+  L2Text(15, 19, "NO GIRLS ALLOWED", BANK_FONT, mask)
+
+  L2Text(15, 21, "RESET SPECTRUM", BANK_FONT, mask)
 
   RefreshSettings()
   gCurrentTrack = MUSIC_ATTRACT
@@ -52,7 +54,7 @@ end sub
 
 sub RefreshSettings()
   ' blank out the section where the indicators and selected item are...
-  for n = 4 to 20
+  for n = 4 to 21
     DoTileBank8(13, n, TILE_GREEN_BACKGROUND, BANK_TILES)
     DoTileBank8(14, n, TILE_GREEN_BACKGROUND, BANK_TILES)
   next n
@@ -61,21 +63,23 @@ sub RefreshSettings()
   DoTileBank8(13, ySettingsHighlight, TILE_SETTING_HIGHLIGHT, BANK_TILES)
 
   ' indicate our various selected options
-  DoTileBank8(14, 12+ySettingsSchool, TILE_SETTING_SELECTED, BANK_TILES)
-  DoTileBank8(14, 16+ySettingsSegregation, TILE_SETTING_SELECTED, BANK_TILES)
+  DoTileBank8(14, 11+ySettingsSchool, TILE_SETTING_SELECTED, BANK_TILES)
+  DoTileBank8(14, 15+ySettingsSegregation, TILE_SETTING_SELECTED, BANK_TILES)
 end sub
 
 
 ' reign-in the y position based on the screen content, going upwards
 sub UpSettings()
   if ySettingsHighlight = 4
-    ySettingsHighlight = 20
-  elseif ySettingsHighlight = 10
+    ySettingsHighlight = 21
+  elseif ySettingsHighlight = 9
     ySettingsHighlight = 4
-  elseif ySettingsHighlight = 12
-    ySettingsHighlight = 10
-  elseif ySettingsHighlight = 16
-    ySettingsHighlight = 14
+  elseif ySettingsHighlight = 11
+    ySettingsHighlight = 9
+  elseif ySettingsHighlight = 15
+    ySettingsHighlight = 13
+  elseif ySettingsHighlight = 21
+    ySettingsHighlight = 19
   else
     ySettingsHighlight = ySettingsHighlight - 1
   endif
@@ -86,12 +90,14 @@ end sub
 ' reign-in the y position based on the screen content, going downards
 sub DownSettings()
   if ySettingsHighlight = 4
-    ySettingsHighlight = 10
-  elseif ySettingsHighlight = 10
-    ySettingsHighlight = 12
-  elseif ySettingsHighlight = 14
-    ySettingsHighlight = 16
-  elseif ySettingsHighlight = 20
+    ySettingsHighlight = 9
+  elseif ySettingsHighlight = 9
+    ySettingsHighlight = 11
+  elseif ySettingsHighlight = 13
+    ySettingsHighlight = 15
+  elseif ySettingsHighlight = 19
+    ySettingsHighlight = 21
+  elseif ySettingsHighlight = 21
     ySettingsHighlight = 4
   else
     ySettingsHighlight = ySettingsHighlight + 1 
@@ -109,21 +115,25 @@ sub SelectSettings()
     JumpScreen(LEVELSTARTSCREEN)
     return
    
-  elseif ySettingsHighlight = 10 ' change keys
+  elseif ySettingsHighlight = 9 ' change keys
     JumpScreen(KEYSSCREEN)
     ySettingsHighlight = 4
     return
 
-  elseif ySettingsHighlight = 12 ' rural school
+  elseif ySettingsHighlight = 11 ' rural school
     ySettingsSchool = 0
-  elseif ySettingsHighlight = 13 ' suburban school
+  elseif ySettingsHighlight = 12 ' suburban school
     ySettingsSchool = 1
-  elseif ySettingsHighlight = 14 ' metropolitan school
+  elseif ySettingsHighlight = 13 ' metropolitan school
     ySettingsSchool = 2
 
-  elseif ySettingsHighlight > 15 and ySettingsHighlight < 21
-    ySettingsSegregation = ySettingsHighlight - 16 ' setting segregation
-  endif
+  elseif ySettingsHighlight > 14 and ySettingsHighlight < 20
+    ySettingsSegregation = ySettingsHighlight - 15 ' setting segregation
+  
+  elseif ySettingsHighlight = 21
+    ResetNext()
+
+endif
 
   RefreshSettings()  
 end sub

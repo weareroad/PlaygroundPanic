@@ -491,6 +491,12 @@ sub ChangeMusic()
   if gCurrentTrack <> gLastTrack
     DisableMusic
 
+    if gCurrentTrack < MUSIC_FIRSTINDEX
+      gCurrentTrack = MUSIC_FIRSTINDEX
+    elseif gCurrentTrack > MUSIC_LASTINDEX
+      gCurrentTrack = MUSIC_LASTINDEX
+    endif
+
     InitMusic(42, gCurrentTrack, 0)
     SetUpIM()
     EnableMusic

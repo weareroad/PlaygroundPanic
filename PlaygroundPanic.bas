@@ -29,11 +29,11 @@ LoadSDBank("PanicSprites.spr", 0, 0, 0, 36) ' BANK_SPRITES
 LoadSDBank("game.afb",0,0,0,41)  ' BANK_SFX
 LoadSDBank("[]ts4000.bin",0,0,0,42) ' BANK_PLAYER
 
-LoadSDBank("just_say_no.pt3",0,0,0,43) 'MUSIC_ATTRACT intro_attract_1.pt3
-LoadSDBank("game_theme_1.pt3",0,0,0,44) 'MUSIC_GAME_1
-LoadSDBank("game_theme_2.pt3",0,0,0,45) 'MUSIC_GAME_2
-LoadSDBank("game_theme_1.pt3",0,0,0,46) 'MUSIC_GAME_3
-LoadSDBank("game_theme_2.pt3",0,0,0,47) 'MUSIC_GAME_4
+LoadSDBank("intro_attract_1.pt3",0,0,0,43) 'MUSIC_ATTRACT intro_attract_1.pt3
+LoadSDBank("just_say_no.pt3",0,0,0,44) 'MUSIC_GAME_1
+LoadSDBank("game_theme_1.pt3",0,0,0,45) 'MUSIC_GAME_2
+LoadSDBank("game_theme_2.pt3",0,0,0,46) 'MUSIC_GAME_3
+LoadSDBank("game_theme_1.pt3",0,0,0,47) 'MUSIC_GAME_4
 LoadSDBank("dead_1.pt3",0,0,0,48) 'MUSIC_ENDGAME
 LoadSDBank("level_dywmb.pt3",0,0,0,49) 'MUSIC_LEVEL_1
 LoadSDBank("level_eott.pt3",0,0,0,50) 'MUSIC_LEVEL_2
@@ -41,11 +41,12 @@ LoadSDBank("level_tm.pt3",0,0,0,51) 'MUSIC_LEVEL_3
 LoadSDBank("level_tcm.pt3",0,0,0,52) 'MUSIC_LEVEL_4
 
 
+
 InitSprites2(64, 0, BANK_SPRITES)
 InitSFX(41)
 gCurrentTrack = MUSIC_ATTRACT
 gLastTrack = gCurrentTrack
-InitMusic(42, gCurrentTrack, 0000)
+InitMusic(42, gCurrentTrack, 0)
 SetUpIM()
 PlaySFX(SOUND_NONE)
 

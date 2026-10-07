@@ -102,8 +102,8 @@
 #define SOUND_SLIDE 48
 #define SOUND_BELL 67
 
-const GAME_VER as string = "VER 1.1A"
-
+const GAME_VER as string = "VER 1.1B"
+const MUSIC_FIRSTINDEX as ubyte = 43 
 const MUSIC_ATTRACT as ubyte = 43
 const MUSIC_GAME_1 as ubyte = 44
 const MUSIC_GAME_2 as ubyte = 45
@@ -114,7 +114,8 @@ const MUSIC_LEVEL_1 as ubyte = 49
 const MUSIC_LEVEL_2 as ubyte = 50
 const MUSIC_LEVEL_3 as ubyte = 51
 const MUSIC_LEVEL_4 as ubyte = 52
-const HITS_COUNT as ubyte = 4
+const MUSIC_LASTINDEX as ubyte = 52
+const MUSIC_TRACKS_COUNT as ubyte = 4 ' we have 4 main themes (MUSIC_GAME) and 4 'snippets' (MUSIC_LEVEL)
 
 #define MODE_ACTIVE 1
 #define MODE_INACTIVE 0
@@ -226,7 +227,7 @@ dim gTimeNextSpecial as UINTEGER = 0
 dim gTimeBetweenSpecials as UINTEGER = 1000
 dim gBonusText(BONUS_TEXT_COUNT) as STRING
 dim gBonusTextCount as ubyte = 0
-dim gCurrentTrack as ubyte = 44
+dim gCurrentTrack as ubyte = MUSIC_ENDGAME
 dim gLastTrack as ubyte = 0
 
 ' used for debugging stuff from the game screen

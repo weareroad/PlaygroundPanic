@@ -11,4 +11,5 @@ main.cfg
 !/data/*.*
 PlaygroundPanic.cfg
 *.bas.map
+push-sync.sh
 build/

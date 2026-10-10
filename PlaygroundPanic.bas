@@ -2,13 +2,12 @@
 ' NextBuild Layer2 Template 
 
 
-' PLAYGROUND PANIC (was APOCALYPSE BREAKTIME)
+' PLAYGROUND PANIC
 ' Road 2026
 '
 '
 #DEFINE NEX 
 #DEFINE IM2 
-
 #INCLUDE <nextlib.bas>
 #INCLUDE <nextlib_ints.bas>
 #INCLUDE <keys.bas>
@@ -17,8 +16,9 @@
 #INCLUDE "Helpers.bas"
 INK 0: PAPER 0: CLS
 
+InitLayer2(MODE256X192)
+ShowLayer2(TRUE)
 SetupNext()
-CLS256(COLOR_BLACK)
 
 '' the [] prefix here tells NBS that the file is in the NBS distribution stuff
 '' and if the file doesn't begin [], it's assumed to be in the 'data' subfolder of the project
@@ -26,10 +26,10 @@ CLS256(COLOR_BLACK)
 LoadSDBank("[]font7.fnt", 0, 0, 0, 32) ' BANK_FONT - was .SPR, now .FNT
 LoadSDBank("tiles_8x8.spr", 0, 0, 0, 34) ' BANK_TILES
 LoadSDBank("PanicSprites.spr", 0, 0, 0, 36) ' BANK_SPRITES
-LoadSDBank("game.afb",0,0,0,41)  ' BANK_SFX
+LoadSDBank("game-sfx.afb",0,0,0,41)  ' BANK_SFX
 LoadSDBank("[]ts4000.bin",0,0,0,42) ' BANK_PLAYER
 
-LoadSDBank("intro_attract_1.pt3",0,0,0,43) 'MUSIC_ATTRACT intro_attract_1.pt3
+LoadSDBank("intro_attract_1.pt3",0,0,0,43) 'MUSIC_ATTRACT
 LoadSDBank("just_say_no.pt3",0,0,0,44) 'MUSIC_GAME_1
 LoadSDBank("game_theme_1.pt3",0,0,0,45) 'MUSIC_GAME_2
 LoadSDBank("game_theme_2.pt3",0,0,0,46) 'MUSIC_GAME_3
@@ -55,20 +55,21 @@ EnableMusic
 
 #include "GameHelpers.bas"
 
-' initial landing page
-for n = 9 to 21
-  DoTileBank8(n, 12, TILE_BLACK_BACKGROUND, BANK_TILES)
-  DoTileBank8(n, 13, TILE_BLACK_BACKGROUND, BANK_TILES)
-  DoTileBank8(n, 14, TILE_BLACK_BACKGROUND, BANK_TILES)
-next n
-L2Text(9, 9, "STOP THE TAPE!", BANK_FONT, 0)
-L2Text(8, 12, "PRESS SPACE/FIRE", BANK_FONT, 0)
-do 
-  asm
-    halt
-  end asm
-loop until SpaceOrFire()=1
-
+if 1=0
+  ' initial landing page
+  for n = 9 to 21
+    DoTileBank8(n, 12, TILE_BLACK_BACKGROUND, BANK_TILES)
+    DoTileBank8(n, 13, TILE_BLACK_BACKGROUND, BANK_TILES)
+    DoTileBank8(n, 14, TILE_BLACK_BACKGROUND, BANK_TILES)
+  next n
+  L2Text(9, 9, "STOP THE TAPE!", BANK_FONT, 0)
+  L2Text(8, 12, "PRESS SPACE/FIRE", BANK_FONT, 0)
+  do 
+    asm
+      halt
+    end asm
+  loop until SpaceOrFire()=1
+endif
 
 #include "AttractScreen.bas"
 #include "SettingsScreen.bas"
@@ -165,8 +166,8 @@ sub SetupNext()
     ; 28mhz, black transparency, sprites on over border, 256x192
     nextreg TURBO_CONTROL_NR_07,%11         ; 28 mhz 
     nextreg GLOBAL_TRANSPARENCY_NR_14,$0    ; black 
-    nextreg SPRITE_CONTROL_NR_15,%01000011  ; %000    sprite 0 on top S L U, %11 sprites on over border
     nextreg LAYER2_CONTROL_NR_70,$0  ; 5-4 %00 = 256x192
+    nextreg SPRITE_CONTROL_NR_15,%01000011  ; %000    sprite 0 on top S L U, %11 sprites on over border
   end asm 
 end sub
 

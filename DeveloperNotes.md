@@ -165,6 +165,10 @@ The high-score table is populated from a `DATA` block in `PlaygroundPanic.bas` a
 
 The informal `rob-wip-notes.md.txt` contains useful historical bug reports and design ideas, but it also includes completed, superseded, and speculative items. Validate each item against the code before implementing it.
 
+## Dinner Lady update  
+The dinner lady is a persistent roaming hazard: once spawned, she remains active for the rest of normal play, repeatedly selecting destinations around the playground and preventing another dinner lady from spawning. She can coexist with the dog, snatcher, and static pickups. While moving, she can see up to 120 pixels ahead in her current direction within a narrow row or column; the first sighting plays a warning sound and adds 15 seconds to the clock, capped at the level’s initial time. A latch prevents repeated penalties while the player remains visible and resets once the player leaves her sight line or she walks past them. Physical contact freezes the player but does not remove the dinner lady, and space dust does not affect her. When the bell rings, she stops detecting or penalising the player, heads back to the exit, and no subsequent gameplay sound effects interrupt the bell.
+
+
 ## Platform setup (initial pass)
 
 These notes currently cover the author's Omarchy Quattro machine. The Windows and macOS paths still need to be added once they have been exercised and can be described accurately.

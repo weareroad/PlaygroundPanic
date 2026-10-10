@@ -56,32 +56,43 @@ sub SpawnDust()
   PlaySound(SOUND_ITEM_APPEAR)
 end sub
 
+sub SetDinnerRoamTarget()
+  cTargetX(SPRITE_DINNER) = GetClearXPos()
+  cTargetY(SPRITE_DINNER) = GetClearYPos()
+  SetForTarget(SPRITE_DINNER)
+end sub
 
 sub SpawnDinner()
 ' pick direction to move in
 ' pick direction to face
 ' this will give us our starting position
-'
-cXPos(SPRITE_DINNER)=gExitX
-cYPos(SPRITE_DINNER)=gExitY
+  cXPos(SPRITE_DINNER) = gExitX
+  cYPos(SPRITE_DINNER) = gExitY
 
-  cTargetX(SPRITE_DINNER)=pXPos
-  cTargetY(SPRITE_DINNER)=pYPos
+  cMode(SPRITE_DINNER) = MODE_ACTIVE
+  cKind(SPRITE_DINNER) = KIND_WATCHER
+''  cKind(SPRITE_DINNER)=KIND_TARGET 'KIND_WATCHER
+  cSpeed(SPRITE_DINNER) = 5
+  cTimer(SPRITE_DINNER) = 0
+  cAnimFrame(SPRITE_DINNER) = 1
+  cFrozen(SPRITE_DINNER) = 0
 
-  cMode(SPRITE_DINNER)=MODE_ACTIVE
-  cKind(SPRITE_DINNER)=KIND_TARGET 'KIND_WATCHER
+  gDinnerPlayerSeen = 0
+  SetDinnerRoamTarget()
   PlaySound(SOUND_NPC_APPEAR)
 end sub
 
 
 ' can we spawn something - keeping it all deterministic
 sub SpawnSpecial()
+  if gTimeToGo < 7 then return ' don't spawn anything if there's only a few seconds to go 
+
   dim active as ubyte = 0
-  for n=SPRITE_NPC_COUNT to SPRITE_COUNT
+  for n=SPRITE_DUST to SPRITE_COUNT
     if cMode(n)=MODE_ACTIVE then active = active + 1
   next n
 
-  if active>2 then return
+  if active>=MAX_ACTIVE_SPECIALS then return
 
   ' bit ghastly but makes it deterministic without being a simple short cycle
   if gNextSpecial > 11 then gNextSpecial = 0
@@ -227,8 +238,6 @@ end sub
 sub CollideDinner()
   FreezePlayer(DINNER_FREEZE)
   PlaySound(SOUND_OUCH)
-  UpdateTime()
-  DinnerOut()
 end sub
 
 
@@ -252,6 +261,7 @@ sub DinnerOut()
     cKind(SPRITE_DINNER) = KIND_GO_EXIT
     HandleNPCChange(SPRITE_DINNER)
   endif
+  gDinnerPlayerSeen = 0
 end sub
 
 
@@ -282,4 +292,58 @@ sub EverybodyOut()
   DinnerOut()
   DogOut()
   SnatcherOut()
+end sub
+
+
+function DinnerCanSeePlayer() as ubyte
+  if cMode(SPRITE_DINNER) <> MODE_ACTIVE then return 0
+  if gTimeToGo = 0 then return 0
+  if cKind(SPRITE_DINNER) = KIND_GO_EXIT then return 0
+  if CheckPlayerNPCCollision(SPRITE_DINNER) = COLLISION then return 0
+
+  dim dx as INTEGER
+  dim dy as INTEGER
+
+  dx = abs(tInts(pXPos) - tInts(cXPos(SPRITE_DINNER)))
+  dy = abs(tInts(pYPos) - tInts(cYPos(SPRITE_DINNER)))
+
+  if cDir(SPRITE_DINNER) = MOVE_DOWN
+    if dx <= DINNER_SIGHT_MARGIN and _
+       dy <= DINNER_SIGHT_DISTANCE and _
+       pYPos > cYPos(SPRITE_DINNER) then return 1
+
+  elseif cDir(SPRITE_DINNER) = MOVE_UP
+    if dx <= DINNER_SIGHT_MARGIN and _
+      dy <= DINNER_SIGHT_DISTANCE and _
+      pYPos < cYPos(SPRITE_DINNER) then return 1
+
+  elseif cDir(SPRITE_DINNER) = MOVE_RIGHT
+    if dy <= DINNER_SIGHT_MARGIN and _
+      dx <= DINNER_SIGHT_DISTANCE and _
+      pXPos > cXPos(SPRITE_DINNER) then return 1
+
+  elseif cDir(SPRITE_DINNER) = MOVE_LEFT
+    if dy <= DINNER_SIGHT_MARGIN and _
+      dx <= DINNER_SIGHT_DISTANCE and _
+      pXPos < cXPos(SPRITE_DINNER) then return 1
+  endif
+
+  return 0
+end function
+
+
+sub HandleDinnerSight()
+  dim canSee as ubyte = DinnerCanSeePlayer()
+
+  if canSee = 0
+    gDinnerPlayerSeen = 0
+    return
+  endif
+
+  if gDinnerPlayerSeen = 0
+    gDinnerPlayerSeen = 1
+    IncreaseTime(MILK_TIME)
+    UpdateTime()
+    PlaySound(SOUND_SEEN)
+  endif
 end sub

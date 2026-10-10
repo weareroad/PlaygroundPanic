@@ -10,6 +10,7 @@ sub HandleGameScreen()
   if endGame=1
     LifeOver()
   elseif endGame=2
+    ' we're done, the level is finished
     NextLevel()
   endif
 end sub
@@ -375,6 +376,8 @@ sub UpdateGameItems()
     endif
   next npc
 
+  HandleDinnerSight()
+
   CheckLevelEnd()
 end sub
 
@@ -407,19 +410,23 @@ sub ChangeDog()
   endif
 end sub
 
-
 sub ChangeDinner()
   if cKind(SPRITE_DINNER) = KIND_LEAVE
     RemoveSprite(SPRITE_DINNER, 0)
-    cMode(SPRITE_DINNER) = MODE_INACTIVE ' deactivate sprite
-  elseif cKind(SPRITE_DINNER) <> KIND_GO_EXIT
-    if cXPos(SPRITE_DINNER)=cTargetX(SPRITE_DINNER) and cYPos(SPRITE_DINNER)=cTargetY(SPRITE_DINNER)
-      SignalLeave(SPRITE_DINNER)    
+    cMode(SPRITE_DINNER) = MODE_INACTIVE
+    gDinnerPlayerSeen = 0
+
+  elseif cKind(SPRITE_DINNER) = KIND_GO_EXIT
+    HandleNPCChange(SPRITE_DINNER)
+
+  else
+    if cXPos(SPRITE_DINNER) = cTargetX(SPRITE_DINNER) and _
+       cYPos(SPRITE_DINNER) = cTargetY(SPRITE_DINNER)
+
+      SetDinnerRoamTarget()
     else
       SetForTarget(SPRITE_DINNER)
     endif
-  else
-    HandleNPCChange(SPRITE_DINNER)
   endif
 end sub
 

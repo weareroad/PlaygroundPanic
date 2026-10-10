@@ -232,16 +232,6 @@ function CheckPlayerNPCCollision(npc as ubyte) as ubyte
   if sum > SQRCOLMARGIN
     return NO_COLLISION
   else
-    if DEBUG_MODE > 0
-      debugC = npc
-      debugStr1 = "p"+str(pXPos)+","+str(pYPos)+":"+str(cXPos(npc))+","+str(cYPos(npc))
-      'debugStr2 = "d"+str(dx)+","+str(dy)+":"+str(sx)+","+str(sy)
-  ''    debugStr2 = tInts(str(dx)+","+str(dy)+":"+str(sx)+","+str(sy)
-    else
-      debugC = NO_RETAIN
-      debugStr1 = " "
-      debugStr2 = " "
-    endif
     return COLLISION
   endif
 end function
@@ -319,6 +309,7 @@ sub ResetSpecials()
     cPooMode(poo) = MODE_INACTIVE
     cPooTimer(poo) = 0
   next poo
+  gDinnerPlayerSeen = 0
 end sub
 
 

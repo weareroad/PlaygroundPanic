@@ -69,7 +69,7 @@ The following is an up-to-date snapshot of the files currently in the repository
 └── data/
     ├── PanicSprites.spr # main sprites file
     ├── dead_1.pt3 # music played when you 'die'
-    ├── game.afb # sound effects file
+    ├── game-sfx.afb # updated sound effects file
     ├── game_theme_1.pt3 # temp game intro theme
     ├── game_theme_2.pt3 # another game intro theme
     ├── intro_attract_1.pt3 # and another one - not sure which ones are used

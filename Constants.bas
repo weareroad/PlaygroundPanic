@@ -92,7 +92,7 @@
 #define SOUND_GOT_CANE 78
 #define SOUND_GOT_MILK 53
 #define SOUND_GOT_DUST 52
-#define SOUND_OUCH 91
+#define SOUND_OUCH 11
 #define SOUND_NPC_WIN 2
 #define SOUND_NONE 0
 #define SOUND_NPC_APPEAR 1
@@ -100,9 +100,10 @@
 #define SOUND_DEAD 56
 #define SOUND_POO 44
 #define SOUND_SLIDE 48
-#define SOUND_BELL 67
+#define SOUND_BELL 68
+#define SOUND_SEEN 10
 
-const GAME_VER as string = "VER 1.1B"
+const GAME_VER as string = "VER 1.1C"
 const MUSIC_FIRSTINDEX as ubyte = 43 
 const MUSIC_ATTRACT as ubyte = 43
 const MUSIC_GAME_1 as ubyte = 44
@@ -159,6 +160,10 @@ CONST DOGSPRITEWALK as ubyte = 24
 CONST DOGSPRITECLIMBUP as ubyte = 28
 CONST DOGSPRITECLIMBDOWN as ubyte = 32
 CONST POOSPRITE as ubyte = 5
+
+CONST DINNER_SIGHT_MARGIN as INTEGER = 10
+CONST DINNER_SIGHT_DISTANCE as INTEGER = 120
+CONST MAX_ACTIVE_SPECIALS as ubyte = 4
 
 CONST CANE_FREEZE as UINTEGER = 200
 CONST DUST_FREEZE as UINTEGER = 200
@@ -229,6 +234,7 @@ dim gBonusText(BONUS_TEXT_COUNT) as STRING
 dim gBonusTextCount as ubyte = 0
 dim gCurrentTrack as ubyte = MUSIC_ENDGAME
 dim gLastTrack as ubyte = 0
+dim gDinnerPlayerSeen as ubyte = 0
 
 ' used for debugging stuff from the game screen
 dim debugC as ubyte = 0

@@ -4,9 +4,14 @@
 
 ' placeholder
 sub PlaySound(sfx as ubyte)
+  ' special case - on the game screen, once the bell needs to be rung, don't allow other SFX
+  if screenType = GAMESCREEN and _
+     gTimeToGo = 0 and _
+     sfx <> SOUND_BELL then return
   
 	PlaySFX(sfx)
 end sub
+
 
 
 ' don't return until the specfied key is NOT/no longer pressed

@@ -9,6 +9,7 @@ robsprite.cfg
 gameinit.cfg
 main.cfg
 !/data/*.*
+/data/Panic.hi
 PlaygroundPanic.cfg
 *.bas.map
 push-sync.sh

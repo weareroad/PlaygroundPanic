@@ -121,7 +121,7 @@ sub UpdateLoreScreen()
       endif
     next att
   elseif tSettings = 0 '  time to move on?
-    JumpScreen(HISCORELISTSCREEN)
+    JumpScreen(CREDITSCREEN)
     return
   endif
   tSettings = tSettings - 1 
@@ -129,7 +129,7 @@ end sub
 
 
 sub ReadLoreKeyboard()
-if SpaceOrFire()=1 then JumpScreen(CREDITSCREEN)
+if SpaceOrFire()=1 then JumpScreen(SETTINGSSCREEN)
 
 'dim key as UINTEGER
 ''  key = GetKeyScanCode()

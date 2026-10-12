@@ -33,6 +33,8 @@ end function
 sub GameInit()
   gLives = 3
   gNextSpecial = 0
+  gLevel=1
+  gScore = 0
 end sub 
 
 
@@ -45,7 +47,31 @@ function PadUByte(value as ubyte, length as ubyte) as string
   return result
 end function
 
+
 function PadUInt(value as UINTEGER, length as ubyte) as string
+  dim result as string = ""
+  result = Str(value)
+  do until len(result)>=length
+    result = " " + result
+  loop
+  return result
+end function
+
+
+function PadULong(value as ULONG, length as ubyte) as string
+  dim result as string = ""
+
+  result=NStr(value)
+
+  do until len(result)>=length
+    result=" "+result
+  loop
+
+  return result
+end function
+
+
+function oldPadULong(value as ULONG, length as ubyte) as string
   dim result as string = ""
   result = Str(value)
   do until len(result)>=length

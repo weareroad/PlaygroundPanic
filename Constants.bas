@@ -103,7 +103,7 @@
 #define SOUND_BELL 68
 #define SOUND_SEEN 10
 
-const GAME_VER as string = "VER 1.1C"
+const GAME_VER as string = "VER 1.1D"
 const MUSIC_FIRSTINDEX as ubyte = 43 
 const MUSIC_ATTRACT as ubyte = 43
 const MUSIC_GAME_1 as ubyte = 44
@@ -295,5 +295,15 @@ dim gKeyDown as string = "A"
 dim gKeyFire as string = "SPACE"
 dim gKeyAbort as string = "0"
 
+
+CONST HISCORE_NAME_LENGTH as ubyte = 8
+CONST HISCORE_COUNT as ubyte = 10
+CONST HISCORE_FILE_VERSION as ubyte = 1
+CONST HISCORE_FILE_SIZE as ubyte = 126
+CONST HISCORE_HEADER_SIZE as ubyte = 6
+
 dim gHiNames(10) as string
-dim gHiScores(10) as UINTEGER
+dim gHiScores(10) as ULONG
+dim gScore as ULONG
+
+dim gSaveBuffer(126) as UBYTE

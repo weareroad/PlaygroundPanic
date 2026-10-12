@@ -56,7 +56,7 @@ sub UpdateAttractScreen()
       endif
     next att
   elseif tSettings = 0 '  time to move on?
-    JumpScreen(LORESCREEN)
+    JumpScreen(HISCORELISTSCREEN)
     return
   endif
   tSettings = tSettings - 1 

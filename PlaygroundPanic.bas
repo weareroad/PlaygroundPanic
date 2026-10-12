@@ -8,6 +8,8 @@
 '
 #DEFINE NEX 
 #DEFINE IM2 
+#DEFINE __NSTR ' helps get the NStr, which gets around Str(value) problems with ULONG
+
 #INCLUDE <nextlib.bas>
 #INCLUDE <nextlib_ints.bas>
 #INCLUDE <keys.bas>
@@ -54,23 +56,6 @@ EnableSFX
 EnableMusic
 
 #include "GameHelpers.bas"
-
-if 1=0
-  ' initial landing page
-  for n = 9 to 21
-    DoTileBank8(n, 12, TILE_BLACK_BACKGROUND, BANK_TILES)
-    DoTileBank8(n, 13, TILE_BLACK_BACKGROUND, BANK_TILES)
-    DoTileBank8(n, 14, TILE_BLACK_BACKGROUND, BANK_TILES)
-  next n
-  L2Text(9, 9, "STOP THE TAPE!", BANK_FONT, 0)
-  L2Text(8, 12, "PRESS SPACE/FIRE", BANK_FONT, 0)
-  do 
-    asm
-      halt
-    end asm
-  loop until SpaceOrFire()=1
-endif
-
 #include "AttractScreen.bas"
 #include "SettingsScreen.bas"
 #include "GameOverScreen.bas"
@@ -83,12 +68,19 @@ endif
 #include "KeysScreen.bas"
 #include "LoreScreen.bas"
 #include "CreditScreen.bas"
+#include "HiScores.bas"
 
 GenerateLookupTables()
 GenerateScoreTable()
-GameInit()
+LoadHiScores()
 
-' would load scores, keys etc from prefs here in future
+if gHiNames(1)="ROAD"
+  gHiNames(1)="TEST"
+  gHiScores(1)=123456789
+  SaveHiScores()
+endif
+
+GameInit()
 
 JumpScreen(ATTRACTSCREEN)
 
@@ -146,19 +138,6 @@ sub GenerateLookupTables()
   next n
 end sub  
 
-sub GenerateScoreTable()
-  restore scoredata
-  dim n as ubyte
-  for n=1 to 10
-    read gHiNames(n), gHiScores(n)
-  next n
-end sub
-scoredata:
-  data "ROAD",10000,"ADAM",9500 
-  data "ROB",9000,"CLIVE",8500 
-  data "DIZZY",8000,"WILLY",7500 
-  data "JETMAN",7000,"HORACE",6500 
-  data "SABREMAN",6000,"WALLY",5500 
 
 sub SetupNext()
   asm 

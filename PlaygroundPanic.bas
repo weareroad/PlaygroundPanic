@@ -1,7 +1,6 @@
 '!org=24576
 ' NextBuild Layer2 Template 
 
-
 ' PLAYGROUND PANIC
 ' Road 2026
 '
@@ -30,17 +29,18 @@ LoadSDBank("tiles_8x8.spr", 0, 0, 0, 34) ' BANK_TILES
 LoadSDBank("PanicSprites.spr", 0, 0, 0, 36) ' BANK_SPRITES
 LoadSDBank("game-sfx.afb",0,0,0,41)  ' BANK_SFX
 LoadSDBank("[]ts4000.bin",0,0,0,42) ' BANK_PLAYER
-
 LoadSDBank("intro_attract_1.pt3",0,0,0,43) 'MUSIC_ATTRACT
 LoadSDBank("just_say_no.pt3",0,0,0,44) 'MUSIC_GAME_1
 LoadSDBank("game_theme_1.pt3",0,0,0,45) 'MUSIC_GAME_2
 LoadSDBank("game_theme_2.pt3",0,0,0,46) 'MUSIC_GAME_3
-LoadSDBank("game_theme_1.pt3",0,0,0,47) 'MUSIC_GAME_4
+LoadSDBank("game_theme_1.pt3",0,0,0,47) 'MUSIC_GAME_4 STILL TO DO ANOTHER ONE FOR HERE
 LoadSDBank("dead_1.pt3",0,0,0,48) 'MUSIC_ENDGAME
 LoadSDBank("level_dywmb.pt3",0,0,0,49) 'MUSIC_LEVEL_1
 LoadSDBank("level_eott.pt3",0,0,0,50) 'MUSIC_LEVEL_2
 LoadSDBank("level_tm.pt3",0,0,0,51) 'MUSIC_LEVEL_3
 LoadSDBank("level_tcm.pt3",0,0,0,52) 'MUSIC_LEVEL_4
+LoadSDBank("road-256-192-256.pal",0,0,0,66)
+LoadSDBank("road-256-192-256-pal.nxi",0,0,0,68)       ' loading screen 
 
 
 InitSprites2(64, 0, BANK_SPRITES)
@@ -73,18 +73,24 @@ GenerateLookupTables()
 GenerateScoreTable()
 LoadHiScores()
 
-if gHiNames(1)="ROAD"
-  gHiNames(1)="TEST"
-  gHiScores(1)=123456789
-  SaveHiScores()
-endif
+'if gHiNames(1)="ROAD"
+'  gHiNames(1)="TEST"
+'  gHiScores(1)=123456789
+'  SaveHiScores()
+'endif
 
-GameInit()
+InitPalette(L2_PALETTE_P1,66,0,0,0)             ' loading screen palette 
+NextReg(LAYER2_RAM_BANK_NR_12,68>>1)            ' set L2 RAM to point to loading scr RAM
+ShowLayer2(1)                                   ' show the layer2 
+
+do
+  WaitRetrace(1) 
+loop until SpaceOrFire()=1
+
+ResetPalette()
+ClearLayer2(COLOR_BACKGROUND)
 
 JumpScreen(ATTRACTSCREEN)
-
-'CLS256(COLOR_BACKGROUND)
-ClearLayer2(COLOR_BACKGROUND)
 
 ' MAIN GAME LOOP
 do
@@ -149,3 +155,15 @@ sub SetupNext()
   end asm 
 end sub
 
+
+sub ResetPalette()
+  dim n as ubyte
+
+  NextReg($43, %00010000)                         ' Select Layer 2 First Palette for writing
+  NextReg($40, 0)                                 ' Reset the color index back to 0
+
+  for n = 0 to 255 
+    NextRegA($41, n)
+  next n
+
+end sub

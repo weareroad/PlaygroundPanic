@@ -71,15 +71,6 @@ function PadULong(value as ULONG, length as ubyte) as string
 end function
 
 
-function oldPadULong(value as ULONG, length as ubyte) as string
-  dim result as string = ""
-  result = Str(value)
-  do until len(result)>=length
-    result = " " + result
-  loop
-  return result
-end function
-
 function CentreStr(value as string, length as ubyte) as string
   dim result as string = ""
   result = value

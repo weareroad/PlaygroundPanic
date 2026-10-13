@@ -10,7 +10,9 @@ sub InitHiScoreListScreen()
   AllSpritesOff()
   PlayerSpriteOff()
   
-  CLS256(COLOR_BACKGROUND)
+  ''CLS256(COLOR_BACKGROUND)
+  ClearLayer2(COLOR_BACKGROUND)
+
   tSettings = 2000
   L2Text(1, 1, "      PLAYGROUND PANIC", BANK_FONT, 0)
   L2Text(1, 3, "   THE MOST-SLIPPERY KIDS", BANK_FONT, 0)

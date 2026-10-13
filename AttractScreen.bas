@@ -14,7 +14,9 @@ sub InitAttractScreen()
   PlayerSpriteOff()
   tSettings = 2000
 
-  CLS256(COLOR_BACKGROUND)
+ '' CLS256(COLOR_BACKGROUND)
+ ClearLayer2(COLOR_BACKGROUND)
+
   L2Text(1, 1, "      PLAYGROUND PANIC!", BANK_FONT, 0)
   L2Text(1, 3, "   FROM ROAD SOFTWARE 2026", BANK_FONT, 0)
 

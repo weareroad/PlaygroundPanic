@@ -177,6 +177,57 @@ sub SpawnSpecial()
 
   if active>=MAX_ACTIVE_SPECIALS then return
 
+  if gNextSpecial>14 then gNextSpecial = 0
+    
+  if gNextSpecial=0 
+    if cMode(SPRITE_MILK) = MODE_INACTIVE and cMode(SPRITE_SNATCHER) = MODE_INACTIVE then SpawnMilk()
+  elseif gNextSpecial = 1 
+    if cMode(SPRITE_SNATCHER) = MODE_INACTIVE and cMode(SPRITE_MILK) > MODE_INACTIVE then SpawnSnatcher()
+  elseif gNextSpecial = 2 
+    if cMode(SPRITE_CANE) = MODE_INACTIVE then SpawnCane()
+  elseif gNextSpecial = 3
+    if cMode(SPRITE_DOG) = MODE_INACTIVE then SpawnDog()
+  elseif gNextSpecial = 4
+    if cMode(SPRITE_DUST) = MODE_INACTIVE then SpawnDust()
+  elseif gNextSpecial = 5
+    if cMode(SPRITE_DINNER)=MODE_INACTIVE then SpawnDinner()
+  elseif gNextSpecial = 6
+    if cMode(SPRITE_BELL) = MODE_INACTIVE then SpawnBell()
+  elseif gNextSpecial = 7
+    if cMode(SPRITE_1) = MODE_INACTIVE then SpawnSprite1()
+  elseif gNextSpecial = 8
+    if cMode(SPRITE_2) = MODE_INACTIVE then SpawnSprite2()
+  elseif gNextSpecial = 9
+    if cMode(SPRITE_3) = MODE_INACTIVE then SpawnSprite3()
+  elseif gNextSpecial = 10
+    if cMode(SPRITE_4) = MODE_INACTIVE then SpawnSprite4()
+  elseif gNextSpecial = 11
+    if cMode(SPRITE_5) = MODE_INACTIVE then SpawnSprite5()
+  elseif gNextSpecial = 12
+    if cMode(SPRITE_6) = MODE_INACTIVE then SpawnSprite6()
+  elseif gNextSpecial = 13
+    if cMode(SPRITE_7) = MODE_INACTIVE then SpawnSprite7()
+  elseif gNextSpecial = 14
+    if cMode(SPRITE_8) = MODE_INACTIVE then SpawnSprite8()
+  endif
+  
+  gNextSpecial = gNextSpecial + 1
+end sub
+
+
+
+
+' can we spawn something - keeping it all deterministic
+sub oldSpawnSpecial()
+  if gTimeToGo < 7 then return ' don't spawn anything if there's only a few seconds to go 
+
+  dim active as ubyte = 0
+  for n=SPRITE_STATIC_START to SPRITE_COUNT
+    if cMode(n)=MODE_ACTIVE then active = active + 1
+  next n
+
+  if active>=MAX_ACTIVE_SPECIALS then return
+
   ' bit ghastly but makes it deterministic without being a simple short cycle
   if gNextSpecial > 11 then gNextSpecial = 0
 
@@ -276,30 +327,37 @@ sub UpdateSprite1()
   dim clr as ubyte = 0
   UpdateSprite(cXPos(SPRITE_1), cYPos(SPRITE_1), SPRITE_1, NEW01SPRITE, clr , 0)
 end sub
+
 sub UpdateSprite2()
   dim clr as ubyte = 0
   UpdateSprite(cXPos(SPRITE_2), cYPos(SPRITE_2), SPRITE_2, NEW02SPRITE, clr , 0)
 end sub
+
 sub UpdateSprite3()
   dim clr as ubyte = 0
   UpdateSprite(cXPos(SPRITE_3), cYPos(SPRITE_3), SPRITE_3, NEW03SPRITE, clr , 0)
 end sub
+
 sub UpdateSprite4()
   dim clr as ubyte = 0
   UpdateSprite(cXPos(SPRITE_4), cYPos(SPRITE_4), SPRITE_4, NEW04SPRITE, clr , 0)
 end sub
+
 sub UpdateSprite5()
   dim clr as ubyte = 0
   UpdateSprite(cXPos(SPRITE_5), cYPos(SPRITE_5), SPRITE_5, NEW05SPRITE, clr , 0)
 end sub
+
 sub UpdateSprite6()
   dim clr as ubyte = 0
   UpdateSprite(cXPos(SPRITE_6), cYPos(SPRITE_6), SPRITE_6, NEW06SPRITE, clr , 0)
 end sub
+
 sub UpdateSprite7()
   dim clr as ubyte = 0
   UpdateSprite(cXPos(SPRITE_7), cYPos(SPRITE_7), SPRITE_7, NEW07SPRITE, clr , 0)
 end sub
+
 sub UpdateSprite8()
   dim clr as ubyte = 0
   UpdateSprite(cXPos(SPRITE_8), cYPos(SPRITE_8), SPRITE_8, NEW08SPRITE, clr , 0)

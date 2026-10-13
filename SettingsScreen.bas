@@ -17,7 +17,9 @@ sub InitSettingsScreen()
   ySettingsGame = 4 ' always reset this'
   ySettingsHighlight = 4
 
-  CLS256(COLOR_BACKGROUND)
+  ''CLS256(COLOR_BACKGROUND)
+  ClearLayer2(COLOR_BACKGROUND)
+
   dim mask as ubyte = 0
 
   L2Text(7, 1, "PLAYGROUND PANIC", BANK_FONT ,mask)

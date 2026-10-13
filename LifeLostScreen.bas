@@ -12,7 +12,9 @@ end sub
 sub InitLifeLostScreen()
   AllSpritesOff()
   
-  CLS256(COLOR_BACKGROUND)
+  ''CLS256(COLOR_BACKGROUND)
+  ClearLayer2(COLOR_BACKGROUND)
+
   L2Text(1, 1, "     YOU GOT TOUCHED!", BANK_FONT, 0)
   GenEndLifeBonusText()
   L2Text(1,4, "      YOUR BOOBY-PRIZE;", BANK_FONT, 0)

@@ -87,7 +87,9 @@ sub InitLoreScreen()
   PlayerSpriteOff()
   tSettings = 1300
 
-  CLS256(COLOR_BACKGROUND)
+  ''CLS256(COLOR_BACKGROUND)
+  ClearLayer2(COLOR_BACKGROUND)
+
   L2Text(1, 1, "     INTRODUCING THE CAST", BANK_FONT, 0)
   L2Text(15, 22, "PRESS SPACE/FIRE", BANK_FONT, 0)
   SetupLoreNPCs()

@@ -77,7 +77,8 @@ sub InitGameScreen(level as uByte)
   ResetNPCs(tDir)
   ResetSpecials()
 
-  CLS256(COLOR_BACKGROUND)
+  ''CLS256(COLOR_BACKGROUND)
+  ClearLayer2(COLOR_BACKGROUND)
 
   ' draw the top/bottom areas'
   for n = TILE_LEFT_OOB to TILE_RIGHT_OOB
@@ -106,21 +107,23 @@ sub InitGameScreen(level as uByte)
   UpdateTime()
 
   dim m$ as string = right("00"+str(gLevel mod 100),2)
-    L2Text(24, TILE_BOTTOM_OOB+2, "LEVEL " +m$, BANK_FONT, 0)
-  
+    L2Text(28, TILE_BOTTOM_OOB+2, "L:" +m$, BANK_FONT, 0)
+  'gLives=4
+
   for n=1 to gLives*2 step 2
-    if n<11
-      DoTileBank8(TILE_LEFT_OOB+11+n, TILE_BOTTOM_OOB+1, TILE_PLAYER1, BANK_TILES)
-      DoTileBank8(TILE_LEFT_OOB+12+n, TILE_BOTTOM_OOB+1, TILE_PLAYER2, BANK_TILES)
-      DoTileBank8(TILE_LEFT_OOB+11+n, TILE_BOTTOM_OOB+2, TILE_PLAYER3, BANK_TILES)
-      DoTileBank8(TILE_LEFT_OOB+12+n, TILE_BOTTOM_OOB+2, TILE_PLAYER4, BANK_TILES)
+    if n<6
+      DoTileBank8(TILE_LEFT_OOB+9+n, TILE_BOTTOM_OOB+1, TILE_PLAYER1, BANK_TILES)
+      DoTileBank8(TILE_LEFT_OOB+10+n, TILE_BOTTOM_OOB+1, TILE_PLAYER2, BANK_TILES)
+      DoTileBank8(TILE_LEFT_OOB+9+n, TILE_BOTTOM_OOB+2, TILE_PLAYER3, BANK_TILES)
+      DoTileBank8(TILE_LEFT_OOB+10+n, TILE_BOTTOM_OOB+2, TILE_PLAYER4, BANK_TILES)
     endif
   next n
   ' to do change this for something better'
-  if gLives>5 then L2Text(22, TILE_BOTTOM_OOB+2, "#", BANK_FONT, 0)
+  if gLives>3 then L2Text(16, TILE_BOTTOM_OOB+2, "#", BANK_FONT, 0)
 
-
-
+  'gScore=12345678
+  L2Text(17, TILE_BOTTOM_OOB+2, PadULong(gScore, 9), BANK_FONT, 0)
+ 
 end sub
 
 
@@ -224,7 +227,7 @@ sub LevelEnded()
   PlaySound(SOUND_BELL)
   
   ' clear the timer part of the bottom display area
-  for n = TILE_LEFT_OOB to 11
+  for n = TILE_LEFT_OOB to 9
     DoTileBank8(n, TILE_BOTTOM_OOB+1, 4, BANK_TILES)
     DoTileBank8(n, TILE_BOTTOM_OOB+2, 4, BANK_TILES)
   next n

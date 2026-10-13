@@ -508,6 +508,17 @@ sub SpecialSpritesOff()
   RemoveSprite(SPRITE_MILK,0)
   RemoveSprite(SPRITE_DOG,0)
   RemoveSprite(SPRITE_SNATCHER,0)
+
+  RemoveSprite(SPRITE_1,0)
+  RemoveSprite(SPRITE_2,0)
+  RemoveSprite(SPRITE_3,0)
+  RemoveSprite(SPRITE_4,0)
+  RemoveSprite(SPRITE_5,0)
+  RemoveSprite(SPRITE_6,0)
+  RemoveSprite(SPRITE_7,0)
+  RemoveSprite(SPRITE_8,0)
+  RemoveSprite(SPRITE_BELL,0)
+
   for poo = 1 to POO_COUNT
     RemoveSprite(POO_SPRITE_OFFSET+poo,0)
   next poo

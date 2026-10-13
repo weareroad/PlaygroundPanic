@@ -120,7 +120,7 @@
 #define SOUND_BELL 68
 #define SOUND_SEEN 10
 
-const GAME_VER as string = "VER 1.1D"
+const GAME_VER as string = "VER 1.1F"
 const MUSIC_FIRSTINDEX as ubyte = 43 
 const MUSIC_ATTRACT as ubyte = 43
 const MUSIC_GAME_1 as ubyte = 44

@@ -10,7 +10,9 @@ end sub
 sub InitLevelStartScreen()
   AllSpritesOff()
   
-  CLS256(COLOR_BACKGROUND)
+  ''CLS256(COLOR_BACKGROUND)
+  ClearLayer2(COLOR_BACKGROUND)
+
 
   if gLevel>1 then
     L2Text(1, 1, "  YOU SURVIVED BREAK-TIME...", BANK_FONT, 0)

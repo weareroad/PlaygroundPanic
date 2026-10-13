@@ -77,7 +77,8 @@ sub InitGameScreen(level as uByte)
   ResetNPCs(tDir)
   ResetSpecials()
 
-  CLS256(COLOR_BACKGROUND)
+  ''CLS256(COLOR_BACKGROUND)
+  ClearLayer2(COLOR_BACKGROUND)
 
   ' draw the top/bottom areas'
   for n = TILE_LEFT_OOB to TILE_RIGHT_OOB
@@ -106,21 +107,23 @@ sub InitGameScreen(level as uByte)
   UpdateTime()
 
   dim m$ as string = right("00"+str(gLevel mod 100),2)
-    L2Text(24, TILE_BOTTOM_OOB+2, "LEVEL " +m$, BANK_FONT, 0)
-  
+    L2Text(28, TILE_BOTTOM_OOB+2, "L:" +m$, BANK_FONT, 0)
+  'gLives=4
+
   for n=1 to gLives*2 step 2
-    if n<11
-      DoTileBank8(TILE_LEFT_OOB+11+n, TILE_BOTTOM_OOB+1, TILE_PLAYER1, BANK_TILES)
-      DoTileBank8(TILE_LEFT_OOB+12+n, TILE_BOTTOM_OOB+1, TILE_PLAYER2, BANK_TILES)
-      DoTileBank8(TILE_LEFT_OOB+11+n, TILE_BOTTOM_OOB+2, TILE_PLAYER3, BANK_TILES)
-      DoTileBank8(TILE_LEFT_OOB+12+n, TILE_BOTTOM_OOB+2, TILE_PLAYER4, BANK_TILES)
+    if n<6
+      DoTileBank8(TILE_LEFT_OOB+9+n, TILE_BOTTOM_OOB+1, TILE_PLAYER1, BANK_TILES)
+      DoTileBank8(TILE_LEFT_OOB+10+n, TILE_BOTTOM_OOB+1, TILE_PLAYER2, BANK_TILES)
+      DoTileBank8(TILE_LEFT_OOB+9+n, TILE_BOTTOM_OOB+2, TILE_PLAYER3, BANK_TILES)
+      DoTileBank8(TILE_LEFT_OOB+10+n, TILE_BOTTOM_OOB+2, TILE_PLAYER4, BANK_TILES)
     endif
   next n
   ' to do change this for something better'
-  if gLives>5 then L2Text(22, TILE_BOTTOM_OOB+2, "#", BANK_FONT, 0)
+  if gLives>3 then L2Text(16, TILE_BOTTOM_OOB+2, "#", BANK_FONT, 0)
 
-
-
+  'gScore=12345678
+  L2Text(17, TILE_BOTTOM_OOB+2, PadULong(gScore, 9), BANK_FONT, 0)
+ 
 end sub
 
 
@@ -190,6 +193,24 @@ sub HandleCollision(npc as ubyte)
     CollideDust()
   elseif npc=SPRITE_SNATCHER
     CollideSnatcher()
+  elseif npc=SPRITE_1
+    CollideSprite1()
+  elseif npc=SPRITE_2
+    CollideSprite2()
+  elseif npc=SPRITE_3
+    CollideSprite3()
+  elseif npc=SPRITE_4
+    CollideSprite4()
+  elseif npc=SPRITE_5
+    CollideSprite5()
+  elseif npc=SPRITE_6
+    CollideSprite6()
+  elseif npc=SPRITE_7
+    CollideSprite7()
+  elseif npc=SPRITE_8
+    CollideSprite8()
+  elseif npc=SPRITE_BELL
+    CollideBell()
   else
     cMode(npc) = MODE_INACTIVE
     PlaySound(SOUND_DEAD)
@@ -206,7 +227,7 @@ sub LevelEnded()
   PlaySound(SOUND_BELL)
   
   ' clear the timer part of the bottom display area
-  for n = TILE_LEFT_OOB to 11
+  for n = TILE_LEFT_OOB to 9
     DoTileBank8(n, TILE_BOTTOM_OOB+1, 4, BANK_TILES)
     DoTileBank8(n, TILE_BOTTOM_OOB+2, 4, BANK_TILES)
   next n
@@ -226,6 +247,7 @@ sub HandleGameTime()
     gTimer = gTimer - 1
 
     gTimeNextSpecial = gTimeNextSpecial - 1
+    
     if gTimeNextSpecial = 0 
       gTimeNextSpecial = gTimeBetweenSpecials ' may get changed im the spawner later'
       SpawnSpecial()
@@ -431,7 +453,6 @@ sub ChangeDinner()
 end sub
 
 
-'todo - this isn't right, she seems to be leaving abruptly on her way to the exit
 sub ChangeSnatcher()
   if cKind(SPRITE_SNATCHER) = KIND_LEAVE
     RemoveSprite(SPRITE_SNATCHER, 0)
@@ -557,6 +578,17 @@ sub UpdateGamePlayer()
   if cMode(SPRITE_MILK) > MODE_INACTIVE then UpdateMilk()
   if cMode(SPRITE_CANE) > MODE_INACTIVE then UpdateCane()
   if cMode(SPRITE_DUST) > MODE_INACTIVE then UpdateDust()
+
+  if cMode(SPRITE_BELL) > MODE_INACTIVE then UpdateBell()
+  if cMode(SPRITE_1) > MODE_INACTIVE then UpdateSprite1()
+  if cMode(SPRITE_2) > MODE_INACTIVE then UpdateSprite2()
+  if cMode(SPRITE_3) > MODE_INACTIVE then UpdateSprite3()
+  if cMode(SPRITE_4) > MODE_INACTIVE then UpdateSprite4()
+  if cMode(SPRITE_5) > MODE_INACTIVE then UpdateSprite5()
+  if cMode(SPRITE_6) > MODE_INACTIVE then UpdateSprite6()
+  if cMode(SPRITE_7) > MODE_INACTIVE then UpdateSprite7()
+  if cMode(SPRITE_8) > MODE_INACTIVE then UpdateSprite8()
+
 
   if gDogMode=1
     for poo = 1 to POO_COUNT

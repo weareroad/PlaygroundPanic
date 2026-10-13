@@ -11,7 +11,9 @@ sub InitCreditScreen()
   PlayerSpriteOff()
   tSettings = 2000
  
-  CLS256(COLOR_BACKGROUND)
+  ''CLS256(COLOR_BACKGROUND)
+  ClearLayer2(COLOR_BACKGROUND)
+
   L2Text(1, 1, "       PLAYGROUND PANIC", BANK_FONT, 0)
   L2Text(1, 3, " A SPECNEXT GAME, AS PROMISED", BANK_FONT, 0)
   L2Text(1, 6, "     THANKS AND GREETINGS", BANK_FONT, 0)

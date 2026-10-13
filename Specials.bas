@@ -7,6 +7,87 @@ sub SpawnMilk()
   gTimeNextSpecial = gTimeBetweenSpecials / 2 
 end sub
 
+sub SpawnBell()
+  cXPos(SPRITE_BELL)=GetClearXPos()
+  cYPos(SPRITE_BELL)=GetClearYPos()
+  cMode(SPRITE_BELL)=MODE_ACTIVE
+  cKind(SPRITE_BELL)=KIND_STATIC
+  PlaySound(SOUND_ITEM_APPEAR)
+  gTimeNextSpecial = gTimeBetweenSpecials / 2 
+end sub
+
+sub SpawnSprite1()
+  cXPos(SPRITE_1)=GetClearXPos()
+  cYPos(SPRITE_1)=GetClearYPos()
+  cMode(SPRITE_1)=MODE_ACTIVE
+  cKind(SPRITE_1)=KIND_STATIC
+  PlaySound(SOUND_ITEM_APPEAR)
+  gTimeNextSpecial = gTimeBetweenSpecials / 2 
+end sub
+
+sub SpawnSprite2()
+  cXPos(SPRITE_2)=GetClearXPos()
+  cYPos(SPRITE_2)=GetClearYPos()
+  cMode(SPRITE_2)=MODE_ACTIVE
+  cKind(SPRITE_2)=KIND_STATIC
+  PlaySound(SOUND_ITEM_APPEAR)
+  gTimeNextSpecial = gTimeBetweenSpecials / 2 
+end sub
+
+sub SpawnSprite3()
+  cXPos(SPRITE_3)=GetClearXPos()
+  cYPos(SPRITE_3)=GetClearYPos()
+  cMode(SPRITE_3)=MODE_ACTIVE
+  cKind(SPRITE_3)=KIND_STATIC
+  PlaySound(SOUND_ITEM_APPEAR)
+  gTimeNextSpecial = gTimeBetweenSpecials / 2 
+end sub
+
+sub SpawnSprite4()
+  cXPos(SPRITE_4)=GetClearXPos()
+  cYPos(SPRITE_4)=GetClearYPos()
+  cMode(SPRITE_4)=MODE_ACTIVE
+  cKind(SPRITE_4)=KIND_STATIC
+  PlaySound(SOUND_ITEM_APPEAR)
+  gTimeNextSpecial = gTimeBetweenSpecials / 2 
+end sub
+
+sub SpawnSprite5()
+  cXPos(SPRITE_5)=GetClearXPos()
+  cYPos(SPRITE_5)=GetClearYPos()
+  cMode(SPRITE_5)=MODE_ACTIVE
+  cKind(SPRITE_5)=KIND_STATIC
+  PlaySound(SOUND_ITEM_APPEAR)
+  gTimeNextSpecial = gTimeBetweenSpecials / 2 
+end sub
+
+sub SpawnSprite6()
+  cXPos(SPRITE_6)=GetClearXPos()
+  cYPos(SPRITE_6)=GetClearYPos()
+  cMode(SPRITE_6)=MODE_ACTIVE
+  cKind(SPRITE_6)=KIND_STATIC
+  PlaySound(SOUND_ITEM_APPEAR)
+  gTimeNextSpecial = gTimeBetweenSpecials / 2 
+end sub
+
+sub SpawnSprite7()
+  cXPos(SPRITE_7)=GetClearXPos()
+  cYPos(SPRITE_7)=GetClearYPos()
+  cMode(SPRITE_7)=MODE_ACTIVE
+  cKind(SPRITE_7)=KIND_STATIC
+  PlaySound(SOUND_ITEM_APPEAR)
+  gTimeNextSpecial = gTimeBetweenSpecials / 2 
+end sub
+
+sub SpawnSprite8()
+  cXPos(SPRITE_8)=GetClearXPos()
+  cYPos(SPRITE_8)=GetClearYPos()
+  cMode(SPRITE_8)=MODE_ACTIVE
+  cKind(SPRITE_8)=KIND_STATIC
+  PlaySound(SOUND_ITEM_APPEAR)
+  gTimeNextSpecial = gTimeBetweenSpecials / 2 
+end sub
+
 
 sub SpawnDog()
   if gDogMode = 1 then return
@@ -21,6 +102,8 @@ sub SpawnDog()
   PlaySound(SOUND_NPC_APPEAR)
   gDogMode = 1
 end sub
+
+
 
 
 sub SpawnSnatcher()
@@ -62,6 +145,7 @@ sub SetDinnerRoamTarget()
   SetForTarget(SPRITE_DINNER)
 end sub
 
+
 sub SpawnDinner()
 ' pick direction to move in
 ' pick direction to face
@@ -71,7 +155,6 @@ sub SpawnDinner()
 
   cMode(SPRITE_DINNER) = MODE_ACTIVE
   cKind(SPRITE_DINNER) = KIND_WATCHER
-''  cKind(SPRITE_DINNER)=KIND_TARGET 'KIND_WATCHER
   cSpeed(SPRITE_DINNER) = 5
   cTimer(SPRITE_DINNER) = 0
   cAnimFrame(SPRITE_DINNER) = 1
@@ -88,7 +171,58 @@ sub SpawnSpecial()
   if gTimeToGo < 7 then return ' don't spawn anything if there's only a few seconds to go 
 
   dim active as ubyte = 0
-  for n=SPRITE_DUST to SPRITE_COUNT
+  for n=SPRITE_STATIC_START to SPRITE_COUNT
+    if cMode(n)=MODE_ACTIVE then active = active + 1
+  next n
+
+  if active>=MAX_ACTIVE_SPECIALS then return
+
+  if gNextSpecial>14 then gNextSpecial = 0
+    
+  if gNextSpecial=0 
+    if cMode(SPRITE_MILK) = MODE_INACTIVE and cMode(SPRITE_SNATCHER) = MODE_INACTIVE then SpawnMilk()
+  elseif gNextSpecial = 1 
+    if cMode(SPRITE_SNATCHER) = MODE_INACTIVE and cMode(SPRITE_MILK) > MODE_INACTIVE then SpawnSnatcher()
+  elseif gNextSpecial = 2 
+    if cMode(SPRITE_CANE) = MODE_INACTIVE then SpawnCane()
+  elseif gNextSpecial = 3
+    if cMode(SPRITE_DOG) = MODE_INACTIVE then SpawnDog()
+  elseif gNextSpecial = 4
+    if cMode(SPRITE_DUST) = MODE_INACTIVE then SpawnDust()
+  elseif gNextSpecial = 5
+    if cMode(SPRITE_DINNER)=MODE_INACTIVE then SpawnDinner()
+  elseif gNextSpecial = 6
+    if cMode(SPRITE_BELL) = MODE_INACTIVE then SpawnBell()
+  elseif gNextSpecial = 7
+    if cMode(SPRITE_1) = MODE_INACTIVE then SpawnSprite1()
+  elseif gNextSpecial = 8
+    if cMode(SPRITE_2) = MODE_INACTIVE then SpawnSprite2()
+  elseif gNextSpecial = 9
+    if cMode(SPRITE_3) = MODE_INACTIVE then SpawnSprite3()
+  elseif gNextSpecial = 10
+    if cMode(SPRITE_4) = MODE_INACTIVE then SpawnSprite4()
+  elseif gNextSpecial = 11
+    if cMode(SPRITE_5) = MODE_INACTIVE then SpawnSprite5()
+  elseif gNextSpecial = 12
+    if cMode(SPRITE_6) = MODE_INACTIVE then SpawnSprite6()
+  elseif gNextSpecial = 13
+    if cMode(SPRITE_7) = MODE_INACTIVE then SpawnSprite7()
+  elseif gNextSpecial = 14
+    if cMode(SPRITE_8) = MODE_INACTIVE then SpawnSprite8()
+  endif
+  
+  gNextSpecial = gNextSpecial + 1
+end sub
+
+
+
+
+' can we spawn something - keeping it all deterministic
+sub oldSpawnSpecial()
+  if gTimeToGo < 7 then return ' don't spawn anything if there's only a few seconds to go 
+
+  dim active as ubyte = 0
+  for n=SPRITE_STATIC_START to SPRITE_COUNT
     if cMode(n)=MODE_ACTIVE then active = active + 1
   next n
 
@@ -115,6 +249,10 @@ sub SpawnSpecial()
   elseif gNextSpecial = 5 or gNextSpecial = 11
     if cMode(SPRITE_DINNER)=MODE_INACTIVE then SpawnDinner()
 
+      '' add other ones in here
+      '' and fix how we loop through these
+      '' ideally a loop for the dog, dinner lady, snatcher, milk
+      '' and a separate loop for all the others
   endif
   
   gNextSpecial = gNextSpecial + 1
@@ -179,6 +317,51 @@ sub UpdateSnatcher()
   endif
 end sub
 
+sub UpdateBell()
+  dim clr as ubyte = 0
+  UpdateSprite(cXPos(SPRITE_BELL), cYPos(SPRITE_BELL), SPRITE_BELL,BELLSPRITE, clr , 0)
+end sub
+
+
+sub UpdateSprite1()
+  dim clr as ubyte = 0
+  UpdateSprite(cXPos(SPRITE_1), cYPos(SPRITE_1), SPRITE_1, NEW01SPRITE, clr , 0)
+end sub
+
+sub UpdateSprite2()
+  dim clr as ubyte = 0
+  UpdateSprite(cXPos(SPRITE_2), cYPos(SPRITE_2), SPRITE_2, NEW02SPRITE, clr , 0)
+end sub
+
+sub UpdateSprite3()
+  dim clr as ubyte = 0
+  UpdateSprite(cXPos(SPRITE_3), cYPos(SPRITE_3), SPRITE_3, NEW03SPRITE, clr , 0)
+end sub
+
+sub UpdateSprite4()
+  dim clr as ubyte = 0
+  UpdateSprite(cXPos(SPRITE_4), cYPos(SPRITE_4), SPRITE_4, NEW04SPRITE, clr , 0)
+end sub
+
+sub UpdateSprite5()
+  dim clr as ubyte = 0
+  UpdateSprite(cXPos(SPRITE_5), cYPos(SPRITE_5), SPRITE_5, NEW05SPRITE, clr , 0)
+end sub
+
+sub UpdateSprite6()
+  dim clr as ubyte = 0
+  UpdateSprite(cXPos(SPRITE_6), cYPos(SPRITE_6), SPRITE_6, NEW06SPRITE, clr , 0)
+end sub
+
+sub UpdateSprite7()
+  dim clr as ubyte = 0
+  UpdateSprite(cXPos(SPRITE_7), cYPos(SPRITE_7), SPRITE_7, NEW07SPRITE, clr , 0)
+end sub
+
+sub UpdateSprite8()
+  dim clr as ubyte = 0
+  UpdateSprite(cXPos(SPRITE_8), cYPos(SPRITE_8), SPRITE_8, NEW08SPRITE, clr , 0)
+end sub
 
 sub UpdateMilk()
   dim clr as ubyte = 0
@@ -214,6 +397,71 @@ sub CollideMilk()
   ReduceTime(MILK_TIME)
   UpdateTime()
   RemoveSprite(SPRITE_MILK,0)
+end sub
+
+sub CollideSprite1()
+  cMode(SPRITE_1) = MODE_INACTIVE
+  PlaySound(SOUND_OUCH)
+  IncreaseTime(5)
+  ''FreezeNPCs(DUST_FREEZE)
+  RemoveSprite(SPRITE_1,0)
+end sub
+
+sub CollideSprite2()
+  cMode(SPRITE_2) = MODE_INACTIVE
+  PlaySound(SOUND_OUCH)
+  ''FreezeNPCs(DUST_FREEZE)
+  RemoveSprite(SPRITE_2,0)
+end sub
+
+sub CollideSprite3()
+  cMode(SPRITE_3) = MODE_INACTIVE
+  PlaySound(SOUND_OUCH)
+  ''FreezeNPCs(DUST_FREEZE)
+  RemoveSprite(SPRITE_3,0)
+end sub
+
+sub CollideSprite4()
+  cMode(SPRITE_4) = MODE_INACTIVE
+  PlaySound(SOUND_OUCH)
+  ''FreezeNPCs(DUST_FREEZE)
+  RemoveSprite(SPRITE_4,0)
+end sub
+
+sub CollideSprite5()
+  cMode(SPRITE_5) = MODE_INACTIVE
+  PlaySound(SOUND_OUCH)
+  ''FreezeNPCs(DUST_FREEZE)
+  RemoveSprite(SPRITE_5,0)
+end sub
+
+sub CollideSprite6()
+  cMode(SPRITE_6) = MODE_INACTIVE
+  PlaySound(SOUND_OUCH)
+  ''FreezeNPCs(DUST_FREEZE)
+  RemoveSprite(SPRITE_6,0)
+end sub
+
+sub CollideSprite7()
+  cMode(SPRITE_7) = MODE_INACTIVE
+  PlaySound(SOUND_OUCH)
+  ''FreezeNPCs(DUST_FREEZE)
+  RemoveSprite(SPRITE_7,0)
+end sub
+
+sub CollideSprite8()
+  cMode(SPRITE_8) = MODE_INACTIVE
+  PlaySound(SOUND_OUCH)
+  ''FreezeNPCs(DUST_FREEZE)
+  RemoveSprite(SPRITE_8,0)
+end sub
+
+sub CollideBell()
+  cMode(SPRITE_BELL) = MODE_INACTIVE
+  PlaySound(SOUND_OUCH)
+  ''FreezeNPCs(DUST_FREEZE)
+  ReduceTime(MILK_TIME)
+  RemoveSprite(SPRITE_BELL,0)
 end sub
 
 

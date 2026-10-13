@@ -1,3 +1,4 @@
+
 #define ATTRACTSCREEN 0
 #define SETTINGSSCREEN 1
 #define GAMEOVERSCREEN 2
@@ -70,8 +71,14 @@
 #define TILE_PLAYER4 51
 
 ' the number of NPCs, dynamic power-ups etc
-#define SPRITE_COUNT 38
+#define SPRITE_COUNT 50
+' 38
+
 #define SPRITE_NPC_COUNT 30
+
+#define SPRITE_STATIC_START 31
+'' we use this as a 'start-point' for the static powerups etc - SPRITE_DUST, presently
+
 #define ATTRACT_COUNT 10
 #define BONUS_TEXT_COUNT 10
 
@@ -82,6 +89,16 @@
 #define SPRITE_SNATCHER 35
 #define SPRITE_CANE 37
 #define SPRITE_PLAYER 0
+
+#define SPRITE_BELL 38
+#define SPRITE_1 39
+#define SPRITE_2 40
+#define SPRITE_3 41
+#define SPRITE_4 42
+#define SPRITE_5 43
+#define SPRITE_6 44
+#define SPRITE_7 45
+#define SPRITE_8 46
 
 #define POO_COUNT 10
 #define POO_SPRITE_OFFSET  (SPRITE_COUNT + 2)
@@ -142,6 +159,9 @@ const MUSIC_TRACKS_COUNT as ubyte = 4 ' we have 4 main themes (MUSIC_GAME) and 4
 CONST DEBUG_MODE as ubyte = 1 ' 0 for off, 1 for basic, 2 for sprite inits etc
 
 CONST PLAYERANIMTIMER as ubyte = 5 ' how many WBlanks pass before we move the player anim forwards
+
+'' these are positions in the PanicSprites.SPR file
+
 CONST PLAYERSPRITEWALK as ubyte = 0 ' first sprite in walk sequence (first ones are the stand-still ones)
 CONST PLAYERSPRITECLIMBUP as ubyte = 8 ' first sprite in climb up sequence (again, start with stood still)
 CONST PLAYERSPRITECLIMBDOWN as ubyte = 16 ' first sprite in climb down (standing still at first)
@@ -149,7 +169,18 @@ CONST PLAYERSPRITECLIMBDOWN as ubyte = 16 ' first sprite in climb down (standing
 CONST MILKSPRITE as ubyte = 7
 CONST DUSTSPRITE as ubyte = 6
 CONST CANESPRITE as ubyte = 13
-CONST BELLSPRITE as ubyte = 21
+
+CONST BELLSPRITE as ubyte = 21 '' not used at present?
+'' unused ones to be adopted for other pickups
+CONST NEW01SPRITE as ubyte = 14
+CONST NEW02SPRITE as ubyte = 15
+CONST NEW03SPRITE as ubyte = 22
+CONST NEW04SPRITE as ubyte = 23
+CONST NEW05SPRITE as ubyte = 60
+CONST NEW06SPRITE as ubyte = 61
+CONST NEW07SPRITE as ubyte = 62
+CONST NEW08SPRITE as ubyte = 63
+
 CONST SNATCHERSPRITEWALK as ubyte = 36
 CONST SNATCHERSPRITECLIMBUP as ubyte = 40
 CONST SNATCHERSPRITECLIMBDOWN as ubyte = 44
@@ -161,9 +192,11 @@ CONST DOGSPRITECLIMBUP as ubyte = 28
 CONST DOGSPRITECLIMBDOWN as ubyte = 32
 CONST POOSPRITE as ubyte = 5
 
+
+
 CONST DINNER_SIGHT_MARGIN as INTEGER = 10
 CONST DINNER_SIGHT_DISTANCE as INTEGER = 120
-CONST MAX_ACTIVE_SPECIALS as ubyte = 4
+CONST MAX_ACTIVE_SPECIALS as ubyte = 5
 
 CONST CANE_FREEZE as UINTEGER = 200
 CONST DUST_FREEZE as UINTEGER = 200

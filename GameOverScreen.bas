@@ -22,7 +22,9 @@ sub InitGameOverScreen()
   NPCSpritesOff(NO_RETAIN)
   SpecialSpritesOff()
 
-  CLS256(COLOR_RED)
+  ''CLS256(COLOR_RED)
+  ClearLayer2(COLOR_RED)
+
   L2Text(1, 1, "        GAME OVER", BANK_FONT, 0)
 
   GenEndGameBonusText()

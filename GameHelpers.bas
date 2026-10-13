@@ -324,6 +324,16 @@ sub ResetSpecials()
   cMode(SPRITE_CANE) = MODE_INACTIVE
   cMode(SPRITE_DUST) = MODE_INACTIVE
 
+  cMode(SPRITE_BELL) = MODE_INACTIVE
+  cMode(SPRITE_1) = MODE_INACTIVE
+  cMode(SPRITE_2) = MODE_INACTIVE
+  cMode(SPRITE_3) = MODE_INACTIVE
+  cMode(SPRITE_4) = MODE_INACTIVE
+  cMode(SPRITE_5) = MODE_INACTIVE
+  cMode(SPRITE_6) = MODE_INACTIVE
+  cMode(SPRITE_7) = MODE_INACTIVE
+  cMode(SPRITE_8) = MODE_INACTIVE
+
   cAnimFrame(SPRITE_DOG) = 0
   cSpeed(SPRITE_DOG) = 4 
   cAnimFrame(SPRITE_DINNER) = 0
@@ -498,6 +508,17 @@ sub SpecialSpritesOff()
   RemoveSprite(SPRITE_MILK,0)
   RemoveSprite(SPRITE_DOG,0)
   RemoveSprite(SPRITE_SNATCHER,0)
+
+  RemoveSprite(SPRITE_1,0)
+  RemoveSprite(SPRITE_2,0)
+  RemoveSprite(SPRITE_3,0)
+  RemoveSprite(SPRITE_4,0)
+  RemoveSprite(SPRITE_5,0)
+  RemoveSprite(SPRITE_6,0)
+  RemoveSprite(SPRITE_7,0)
+  RemoveSprite(SPRITE_8,0)
+  RemoveSprite(SPRITE_BELL,0)
+
   for poo = 1 to POO_COUNT
     RemoveSprite(POO_SPRITE_OFFSET+poo,0)
   next poo

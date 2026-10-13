@@ -43,7 +43,6 @@ LoadSDBank("level_tm.pt3",0,0,0,51) 'MUSIC_LEVEL_3
 LoadSDBank("level_tcm.pt3",0,0,0,52) 'MUSIC_LEVEL_4
 
 
-
 InitSprites2(64, 0, BANK_SPRITES)
 InitSFX(41)
 gCurrentTrack = MUSIC_ATTRACT
@@ -84,8 +83,8 @@ GameInit()
 
 JumpScreen(ATTRACTSCREEN)
 
-CLS256(COLOR_BACKGROUND)
-
+'CLS256(COLOR_BACKGROUND)
+ClearLayer2(COLOR_BACKGROUND)
 
 ' MAIN GAME LOOP
 do

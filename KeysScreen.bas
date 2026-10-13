@@ -10,7 +10,9 @@ sub InitKeysScreen()
   AllSpritesOff()
   PlayerSpriteOff()
   
-  CLS256(COLOR_BACKGROUND)
+  ''CLS256(COLOR_BACKGROUND)
+  ClearLayer2(COLOR_BACKGROUND)
+
   L2Text(1, 1, "    REDEFINE KEYS", BANK_FONT, 0)
   gNeedInit=0
 

@@ -402,7 +402,9 @@ end sub
 sub CollideSprite1()
   cMode(SPRITE_1) = MODE_INACTIVE
   PlaySound(SOUND_OUCH)
+  IncreaseScore(100)
   IncreaseTime(5)
+  UpdateTime()
   ''FreezeNPCs(DUST_FREEZE)
   RemoveSprite(SPRITE_1,0)
 end sub
@@ -410,6 +412,7 @@ end sub
 sub CollideSprite2()
   cMode(SPRITE_2) = MODE_INACTIVE
   PlaySound(SOUND_OUCH)
+  IncreaseScore(50)
   ''FreezeNPCs(DUST_FREEZE)
   RemoveSprite(SPRITE_2,0)
 end sub
@@ -417,6 +420,7 @@ end sub
 sub CollideSprite3()
   cMode(SPRITE_3) = MODE_INACTIVE
   PlaySound(SOUND_OUCH)
+  ReduceScore(100)
   ''FreezeNPCs(DUST_FREEZE)
   RemoveSprite(SPRITE_3,0)
 end sub
@@ -425,6 +429,7 @@ sub CollideSprite4()
   cMode(SPRITE_4) = MODE_INACTIVE
   PlaySound(SOUND_OUCH)
   ''FreezeNPCs(DUST_FREEZE)
+  IncreaseScore(150)
   RemoveSprite(SPRITE_4,0)
 end sub
 
@@ -432,6 +437,7 @@ sub CollideSprite5()
   cMode(SPRITE_5) = MODE_INACTIVE
   PlaySound(SOUND_OUCH)
   ''FreezeNPCs(DUST_FREEZE)
+  IncreaseScore(200)
   RemoveSprite(SPRITE_5,0)
 end sub
 
@@ -439,6 +445,7 @@ sub CollideSprite6()
   cMode(SPRITE_6) = MODE_INACTIVE
   PlaySound(SOUND_OUCH)
   ''FreezeNPCs(DUST_FREEZE)
+  ReduceScore(100)
   RemoveSprite(SPRITE_6,0)
 end sub
 
@@ -446,12 +453,14 @@ sub CollideSprite7()
   cMode(SPRITE_7) = MODE_INACTIVE
   PlaySound(SOUND_OUCH)
   ''FreezeNPCs(DUST_FREEZE)
+  IncreaseScore(125)
   RemoveSprite(SPRITE_7,0)
 end sub
 
 sub CollideSprite8()
   cMode(SPRITE_8) = MODE_INACTIVE
   PlaySound(SOUND_OUCH)
+  ReduceScore(100)
   ''FreezeNPCs(DUST_FREEZE)
   RemoveSprite(SPRITE_8,0)
 end sub
@@ -460,6 +469,9 @@ sub CollideBell()
   cMode(SPRITE_BELL) = MODE_INACTIVE
   PlaySound(SOUND_OUCH)
   ''FreezeNPCs(DUST_FREEZE)
+  IncreaseScore(500)
+  ReduceTime(MILK_TIME)
+  ReduceTime(MILK_TIME)
   ReduceTime(MILK_TIME)
   RemoveSprite(SPRITE_BELL,0)
 end sub
@@ -468,6 +480,7 @@ end sub
 sub CollideDust()
   cMode(SPRITE_DUST) = MODE_INACTIVE
   PlaySound(SOUND_GOT_DUST)
+  IncreaseScore(250)
   FreezeNPCs(DUST_FREEZE)
   RemoveSprite(SPRITE_DUST,0)
 end sub
@@ -478,6 +491,7 @@ sub CollideCane()
   PlaySound(SOUND_GOT_CANE)
   FreezePlayer(CANE_FREEZE)
   IncreaseTime(CANE_TIME)
+  ReduceScore(250)
   UpdateTime()
   RemoveSprite(SPRITE_CANE, 0)
 end sub

@@ -338,5 +338,6 @@ CONST HISCORE_HEADER_SIZE as ubyte = 6
 dim gHiNames(10) as string
 dim gHiScores(10) as ULONG
 dim gScore as ULONG
+dim gLastScore as ULONG
 
 dim gSaveBuffer(126) as UBYTE

@@ -104,6 +104,20 @@ sub ReduceTime(seconds as uByte)
 end sub
 
 
+sub IncreaseScore(points as uInteger)
+  gScore = gScore + points
+end sub
+
+
+sub ReduceScore(points as uInteger)
+  if gScore>points
+    gScore = gScore - points
+  else
+    gScore = 0
+  endif
+end sub
+
+
 sub FreezeNPCs(frames as UINTEGER)
   for npc=1 to SPRITE_NPC_COUNT
     cFrozen(npc) = frames

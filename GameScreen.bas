@@ -69,6 +69,7 @@ sub InitGameScreen(level as uByte)
   gDogMode = 0
   gSliding=0
   gCurrentPoo=0
+  gLastScore = gScore
 
   dim tDir as ubyte = gLevel mod 4
   InitLevelDirection(tDir)
@@ -257,6 +258,8 @@ sub HandleGameTime()
     if gTimeToGo > 1 ' still game time left'
       gTimeToGo = gTimeToGo - 1
       gTimer = GAMETICKSECOND
+      gScore = gScore + 5 ' temp!
+
       UpdateTime()
     elseif gTimeToGo = 1 ' the level has ended, we have a one-time flagging-up
       LevelEnded()
@@ -606,7 +609,15 @@ sub UpdateGamePlayer()
       pAnimFrame = 1
     endif
   endif
-  
+
+  if gScore<>gLastScore
+    gLastScore = gScore
+    for n = 17 to 26
+      DoTileBank8(n, TILE_BOTTOM_OOB+2, 4, BANK_TILES)
+    next n
+    L2Text(17, TILE_BOTTOM_OOB+2, PadULong(gScore, 9), BANK_FONT, 0)
+  end if
+
 end sub
 
 
